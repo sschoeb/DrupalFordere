@@ -1,0 +1,543 @@
+<?php
+
+function fordereadmin_menu() {
+
+	$items = array ();
+
+	$items ['fordereadmin/season'] = array (
+			'title' => 'Verwaltung',
+			'page callback' => 'fordereadmin_internal_admindashboard',
+			'access arguments' => array (
+					'fordere administration'
+			)
+	);
+
+	$items ['fordereadmin/season/new'] = array (
+			'title' => 'Neue Season',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'fordereadmin_form_newseason'
+			),
+			'access arguments' => array (
+					'fordere administration'
+			),
+			'type' => MENU_LOCAL_TASK
+	);
+
+	$items ['fordereadmin/menurebuild'] = array (
+			'title' => 'Menu rebuild',
+			'page callback' => 'fordereadmin_internal_menurebuild',
+			'access arguments' => array (
+					'fordere administration'
+			)
+	);
+
+	$seasons = Season::getAllSeasons ();
+	foreach ( $seasons as $season ) {
+
+		$items ['fordereadmin/season/' . $season->seasonId] = array (
+				'title' => $season->name,
+				'page callback' => 'fordereadmin_internal_adminseason',
+				'page arguments' => array (
+						2
+				),
+				'access arguments' => array (
+						'fordere administration'
+				)
+		);
+
+		$items ['fordereadmin/season/' . $season->seasonId . '/payment'] = array (
+				'title' => "Kasse",
+				'page callback' => 'fordereadmin_internal_adminpayment',
+				'page arguments' => array (
+						2
+				),
+				'access arguments' => array (
+						'fordere administration payment'
+				)
+		);
+
+		$items ['fordereadmin/season/' . $season->seasonId . '/newchamp'] = array (
+				'title' => 'Neuer Wettbewerb',
+				'page callback' => 'fordereadmin_internal_adminseason_newchamp',
+				'page arguments' => array (
+						2
+				),
+				'access arguments' => array (
+						'fordere administration'
+				),
+				'type' => MENU_LOCAL_TASK
+		);
+
+		foreach ( $season->championschips as $champ ) {
+			$items ['fordereadmin/season/' . $season->seasonId . '/' . $champ->getId ()] = array (
+					'title' => $champ->getName (),
+					'page callback' => 'fordereadmin_internal_adminchamp',
+					'page arguments' => array (
+							3
+					),
+					'access arguments' => array (
+							'fordere administration'
+					)
+			);
+
+			$items ['fordereadmin/season/' . $season->seasonId . '/' . $champ->getId () . '/teams'] = array (
+					'title' => 'Teams',
+					'page callback' => 'fordereadmin_internal_adminchampteams',
+					'page arguments' => array (
+							3
+					),
+					'access arguments' => array (
+							'fordere administration'
+					)
+			);
+
+			if ($champ instanceof Cup) {
+
+				$items ['fordereadmin/season/' . $season->seasonId . '/' . $champ->getId () . '/matchcreate'] = array (
+						'title' => 'Matches erstellen',
+						'page callback' => 'drupal_get_form',
+						'page arguments' => array (
+								'fordereadmin_internal_matchcreate',
+								3
+						),
+						'access arguments' => array (
+								'fordere administration'
+						)
+				);
+				
+				$items ['fordereadmin/season/' . $season->seasonId . '/' . $champ->getId () . '/openmails'] = array (
+						'title' => 'Open games Mails',
+						'page callback' => 'fordereadmin_internal_cupmailopen',
+						'page arguments' => array (
+								3
+						),
+						'access arguments' => array (
+								'fordere administration'
+						)
+				);
+			}
+
+		}
+
+	}
+
+	return $items;
+}
+
+function fordereadmin_internal_matchcreate($form, $form_state, $championschipId)
+{
+	$out = array();
+	
+	$champ = Championschip::CreateChampionschip($championschipId);
+	$teamData = $champ -> getTeams();
+	$teams = array();
+	foreach($teamData as  $team)
+	{
+		$teams[$team -> id] = $team -> getName();
+	}
+	
+	$teams[-1] = 'Freilos';
+	asort($teams);
+	
+	$out['hometeam'] = array('#type' => 'select',
+			'#title' => t('Heimteam'),
+			'#options' => $teams);
+
+	$out['guestteam'] = array('#type' => 'select',
+			'#title' => t('Gastteam'),
+			'#options' => $teams);
+
+	$out['round'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Runde'));
+	
+	$out['bracket'] = array(
+			'#type' => 'textfield',
+			'#title' => t('Bracket'));
+
+	$out['submit'] = array('#type' => 'submit', '#value' => t('Erstellen'));
+
+	return $out;
+}
+
+function fordereadmin_internal_matchcreate_submit($form, &$form_state)
+{
+	$championschipId = $form_state ['build_info'] ['args'] [0];
+	$hometeam = $form['hometeam']['#value'];
+	$guestteam = $form['guestteam']['#value'];
+	$round = $form['round']['#value'];
+	$bracket = $form['bracket']['#value'];
+	
+	$champ = Championschip::CreateChampionschip($championschipId);
+	
+	$title = $champ -> getName() . ' - Runde #' . $round;
+	
+	GameFactory::createGame($hometeam, $guestteam, $championschipId, $round, $title,$bracket);
+	
+	drupal_set_message('Spiel erfolgreich erstellt');
+}
+
+function fordereadmin_permissions() {
+	return array (
+			'fordere administration' => array (
+					'title' => 'Fordere Administration',
+					'description' => 'Administrieren der Saison und der einzelnen Wettbewerbe'
+			),
+
+	);
+}
+
+function fordereadmin_internal_cupmailopen($champId)
+{
+	$champ = Championschip::CreateChampionschip($champId);
+	
+	$games = $champ -> getOpenGames();
+	$mails = array();
+	foreach($games as $game)
+	{
+		$homeTeam = $game -> getHomeTeam();
+		$guestTeam = $game -> getGuestTeam();
+		if($homeTeam -> id == -1 || $guestTeam -> id == -1)
+		{
+			continue;
+		}
+		
+		
+		$mails[] = $homeTeam -> getPlayer1() -> getContactEmail();
+		$mails[] = $homeTeam -> getPlayer2() -> getContactEmail();
+
+		
+		$mails[] = $guestTeam -> getPlayer1() -> getContactEmail();
+		$mails[] = $guestTeam -> getPlayer2() -> getContactEmail();
+	}
+	
+	$mailJoin = implode(';', $mails);
+	echo "<a href=\"mailto:". $mailJoin ."\">Mails offene Spieler</a>";
+}
+
+function fordereadmin_form_newseason() {
+	$form = array ();
+	$form ['name'] = array (
+			'#type' => 'textfield',
+			'#description' => 'Name der Season',
+			'#title' => 'Name'
+	);
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => 'Season erstellen'
+	);
+	return $form;
+}
+
+function fordereadmin_form_newseason_validate($form, $formState) {
+	if (strlen ( $formState ['values'] ['name'] ) == 0) {
+		form_set_error ( 'name', 'Die neue Season muss einnen Namen haben' );
+	}
+}
+
+function fordereadmin_form_newseason_submit($form, $formState) {
+	$seasonName = $formState ['values'] ['name'];
+
+	db_insert ( 'fordere_season' )->fields ( array (
+	'name',
+	'phase'
+			), array (
+			$seasonName,
+			0
+			) )->execute ();
+
+			// Rebuild menu to make sure new season is visible in administration menu
+			menu_rebuild ();
+
+			drupal_set_message ( 'Neue Season erfolgreich erstellt' );
+}
+
+function fordereadmin_internal_admindashboard() {
+	return drupal_get_form ( 'fordereadmin_form_admindashboard' );
+}
+
+function fordereadmin_form_admindashboard($formState) {
+
+	$form = array ();
+	$form ['currentseason'] = array (
+			'#type' => 'select',
+			'#options' => fordereadmin_getAllSeasons (),
+			'#title' => 'Aktuelle Season',
+			'#default_value' => Season::getCurrentSeasonId (),
+			'#description' => 'Season die aktuell gespielt wird'
+	);
+
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => 'Speichern'
+	);
+	$form ['newseason'] = array (
+			'#markup' => '<br />Neue Season erstellen: ' . l ( 'New Season', 'fordereadmin/season/new' )
+	);
+	return $form;
+}
+
+function fordereadmin_getAllSeasons() {
+	$seasons = array ();
+
+	foreach ( Season::getAllSeasons () as $id => $season ) {
+		$seasons [$id] = $season->name;
+	}
+	return $seasons;
+}
+
+function fordereadmin_form_admindashboard_validate($form, $formState) {
+	if (! array_key_exists ( $formState ['values'] ['currentseason'], fordereadmin_getAllSeasons () )) {
+		form_set_error ( '', 'Unbekannte Season angegeben!' );
+	}
+}
+
+function fordereadmin_form_admindashboard_submit($form, $formState) {
+	variable_set ( 'fordere_currentseason', $formState ['values'] ['currentseason'] );
+	drupal_set_message ( 'Erfolgreich gespeichert!(' . $formState ['values'] ['currentseason'] . ')' );
+}
+
+function fordereadmin_internal_menurebuild() {
+	menu_rebuild ();
+}
+
+function fordereadmin_internal_adminseasonlist() {
+	// SeasonState
+	// Add Championschip
+	return array (
+			'#markup' => 'Admin season list'
+	);
+}
+
+function fordereadmin_internal_adminseason($seasonId) {
+	// SeasonState
+	// Add Championschip
+	return drupal_get_form ( 'fordereadmin_form_adminseason', $seasonId );
+}
+
+function fordereadmin_form_adminseason($form_state, $seasonId) {
+	$form = array ();
+
+	$season = new Season ( $seasonId ['build_info'] ['args'] [0] );
+
+	$phaseOptions = array (
+			'0' => 'Vorbereitung',
+			'1' => 'Anmeldephase',
+			'2' => 'Einteilung',
+			'3' => 'Spielbetrieb',
+			'4' => 'Vorerebitung Finaltag',
+			'5' => 'Archiv'
+	);
+
+	$form ['phase'] = array (
+			'#type' => 'select',
+			'#options' => $phaseOptions,
+			'#default_value' => $season->phase,
+			'#title' => 'Phase',
+			'#description' => 'Aktuelle Phase der Season'
+	);
+
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => 'Speichern'
+	);
+
+	return $form;
+}
+
+function fordereadmin_internal_adminpayment($champId) {
+	return drupal_get_form ( 'fordereadmin_form_adminpayment' );
+}
+
+function fordereadmin_internal_adminchamp($champId) {
+	// Championschip State
+	return array (
+			'#markup' => 'Admin champ'
+	);
+}
+
+function fordereadmin_internal_adminchampteams($champId) {
+	// Disq. Teams
+	// Delete Teams
+	return array (
+			'#markup' => 'Admin cham teams'
+	);
+}
+
+function fordereadmin_internal_adminseason_newchamp($seasonId) {
+	return drupal_get_form ( 'fordereadmin_form_adminseason_newchamp', $seasonId );
+}
+
+function fordereadmin_form_adminseason_newchamp($formState, $seasonId) {
+	$form = array ();
+
+	$champTypes = array (
+			'League' => 'Liga',
+			'Single K.O. Cup',
+			'Double K.O. Cup'
+	);
+
+	$tableTypes = array (
+			'0' => 'Garlando',
+			1 => 'Ullrich'
+	);
+
+	$form ['champtype'] = array (
+			'#type' => 'select',
+			'#options' => $champTypes,
+			'#title' => 'Typ',
+			'#description' => 'Art des Wettbewerbs'
+	);
+
+	$form ['tabletype'] = array (
+			'#type' => 'select',
+			'#options' => $tableTypes,
+			'#title' => 'Tisch-Typ',
+			'#description' => 'Tisch-Typ auf dem der Wettbewerb ausgetragen werden darf'
+	);
+
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => 'Wettbewerb hinzufuegen'
+	);
+
+	return $form;
+}
+
+function fordereadmin_form_adminseason_newchamp_validate($formState, $form) {
+
+}
+
+function fordereadmin_form_adminseason_newchamp_submit($formState, $form) {
+
+}
+
+function forderadmin_helper_isKnownPlayer($players, $player) {
+	foreach ( $players as $playerExist ) {
+		if ($player->id == $playerExist->id) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function fordereadmin_helper_getChamps($playerId, $teams)
+{
+	if(!array_key_exists($playerId, $teams))
+	{
+		return "";
+	}
+	$champs = $teams[$playerId];
+	$out = '';
+
+	foreach ($champs as $data)
+	{
+		$out .= '<b>'.$data['champ'] . '</b>:<br />' . $data['team'] . '<br />';
+	}
+
+	return $out;
+}
+
+function fordereadmin_form_adminpayment($form) {
+
+	$currentSeason = Season::getCurrentSeason ();
+	$teamsArr = array();
+	//TODO: this could be moved to Season class
+	// Get all Teams playing this season
+	$teams = array ();
+	foreach ( $currentSeason->championschips as $champ ) {
+		$newteams = $champ->getTeams ();
+		$teams = array_merge ( $teams, $newteams );
+
+		if($champ -> getRegisterOver() != 0)
+		{
+			continue;
+		}
+
+		foreach ( $newteams as $team ) {
+
+			if(!array_key_exists($team -> getPlayer1() -> id, $teamsArr))
+			{
+				$teamsArr[$team -> getPlayer1() -> id] = array( );
+			}
+			$teamsArr[$team -> getPlayer1() -> id][] = array('champ' => $champ -> getName(), 'team' => $team -> getName());
+
+			if(!array_key_exists($team -> getPlayer2() -> id, $teamsArr))
+			{
+				$teamsArr[$team -> getPlayer2() -> id] = array( );
+			}
+			$teamsArr[$team -> getPlayer2() -> id][] = array('champ' => $champ -> getName(), 'team' => $team -> getName());
+		}
+	}
+
+	// Get all players playing this season
+	$players = array ();
+	foreach ( $teams as $team ) {
+
+		if (! forderadmin_helper_isKnownPlayer ( $players, $team->getPlayer1 () )) {
+			$players [] = $team->getPlayer1 ();
+		}
+		if (! forderadmin_helper_isKnownPlayer ( $players, $team->getPlayer2 () )) {
+			$players [] = $team->getPlayer2 ();
+		}
+	}
+
+	$arr = array ();
+	$arr ['title'] = array (
+			'#markup' => '<h1>Abrechnung aktuelle Saison</h1>'
+	);
+	$arr ['submittop'] = array (
+			'#type' => 'submit',
+			'#value' => 'Speichern',
+			'#suffix' => '<table id="forderadmin_payment"><tr><th width="20%">Name</th><th width="40%">Teams</th><th  width="20%">Kontaktdaten</th><th  width="15%">Bemerkung</th><th  width="5%">Bezahlt</th></tr>'
+	);
+	foreach ( $players as $player ) {
+		$champs = fordereadmin_helper_getChamps($player->id, $teamsArr);
+		$arr ['player'] [$player->id] [$player->id . '_remarks'] = array (
+
+				'#prefix' => '<tr><td>' . $player->name . '</td><td>'.$champs.'</td><td>' . $player->getContactEmail () . '<br />' . $player -> getPhone() . '</td><td>',
+				'#suffix' => '</td>',
+				'#type' => 'textarea',
+				'#default_value' => $player->remarks
+		);
+
+		$arr ['player'] [$player->id] [$player->id . '_check'] = array (
+				'#prefix' => '<td>',
+				'#suffix' => '</td></tr>',
+				'#type' => 'checkbox',
+				'#default_value' => $player->payed
+		);
+	}
+	$arr ['desc'] = array (
+			'#markup' => '</table>'
+	);
+	$arr ['submitbottom'] = array (
+			'#type' => 'submit',
+			'#value' => 'Speichern'
+	);
+	return $arr;
+}
+
+function fordereadmin_form_adminpayment_submit($form, $formState) {
+
+	foreach ( $formState ['values'] as $key => $value ) {
+
+		$keys = explode ( '_', $key );
+
+		if (! is_numeric ( $keys [0] )) {
+
+			continue;
+		}
+
+		//TODO Every field updated twice
+		db_update ( 'fordere_player' )->fields ( array (
+		'payed' => $formState ['values'] [$keys [0] . '_check'] . '',
+		'remarks' => $formState ['values'] [$keys [0] . '_remarks']
+		) )->condition ( 'id', $keys [0], '=' )->execute ();
+	}
+
+}
+
+

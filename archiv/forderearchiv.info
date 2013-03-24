@@ -1,0 +1,5 @@
+name = Fordere Archiv
+description = Archiv fuer das fordere-Module
+dependencies[] = fordere
+package=Fordere
+core = 7.x

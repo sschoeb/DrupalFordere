@@ -1,0 +1,5 @@
+name = Fordere Administration
+description = Administrations-Tools fuerr das fordere-Module
+dependencies[] = fordere
+package=Fordere
+core = 7.x

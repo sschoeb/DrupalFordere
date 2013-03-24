@@ -1,0 +1,514 @@
+<?php
+
+function fordere_schema() {
+    $schema['fordere_player'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'drupalUserId' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0),
+    		'seasonId' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0),
+            'seasonTarget' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+            'name' => array(
+                'description' => 'Name of the player if not a drupal user (imported users old seasons do not have a drupal-user)',
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+    
+    $schema['fordere_league'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'championschipid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0),
+    		
+            'name' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+           
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+
+    $schema['fordere_playerinteam'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'playerId' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'teamId' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'function' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_season'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => false),
+            'begin' => array(
+                'type' => 'int',
+                'not null' => FALSE),
+            'end' => array(
+                'type' => 'int',
+                'not null' => false),
+            'phase' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => false,
+                'default' => 0),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_championschip'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'seasonid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'name' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE),
+            'description' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'default' => ''),
+            'modus' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+    		'registerOverChampionschip' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_table'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'locationid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'zustand' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE),
+            'model' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'default' => ''),
+            'balls' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+            'kosten' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_location'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'name' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE),
+            'website' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE),
+            'longitude' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'default' => ''),
+            'latitude' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+            'openhour' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => ''),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_gameset'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'gameid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE),
+            'goalsteamhome' => array(
+                'type' => 'int',
+                'default' => 0),
+            'goalsteamguest' => array(
+                'type' => 'int',
+                'default' => 0),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['fordere_teaminchampionschip'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'not null' => TRUE),
+            'teamid' => array(
+                'type' => 'int',
+                'not null' => TRUE),
+            'championschipid' => array(
+                'type' => 'int',
+                'default' => 0),
+            'league_wish' => array(
+                'type' => 'int',
+                'default' => 0),
+    		'league_approved' => array(
+                'type' => 'int',
+                'default' => 0),
+            'league_group' => array(
+                'type' => 'int',
+                'default' => 0),
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array('id'),
+    );
+
+    return $schema;
+}
+
+function fordere_install() {
+    createContentType(getGameContentType(), getGameFields(), getGameFieldInstances(), 'fordere_game');
+    createContentType(getTeamContentType(), getTeamFields(), getTeamFieldInstances(), 'fordere_team');
+    createContentType(getLocationContentType(), getLocationFields(), getLocationFieldInstances(), 'fordere_location');
+
+    node_types_rebuild();
+}
+
+function fordere_uninstall() {
+    foreach (array_keys(getGameBaseFields()) as $field) {
+        field_delete_field($field);
+    }
+
+    node_type_delete('fordere_team');
+    node_type_delete('fordere_game');
+    node_type_delete('fordere_location');
+}
+
+function createContentType($contentType, $fields, $instances, $bundle) {
+    $t = get_t();
+
+    $content_type = node_type_set_defaults($contentType);
+    node_type_save($content_type);
+
+
+    foreach ($fields as $field) {
+        field_create_field($field);
+    }
+
+    foreach ($instances as $instance) {
+        $instance['entity_type'] = 'node';
+        $instance['bundle'] = $bundle;
+        field_create_instance($instance);
+    }
+}
+
+function getGameContentType() {
+    $t = get_t();
+    return array(
+        'type' => 'fordere_game',
+        'name' => $t('Game'),
+        'base' => 'node_content',
+        'description' => $t('Content Type to handle Games'),
+        'body_label' => $t('Game description'),
+        'promote' => 0,
+        'status' => 1,
+        'comment' => 0,
+    );
+}
+
+function getLocationContentType() {
+    $t = get_t();
+    return array(
+        'type' => 'fordere_location',
+        'name' => $t('Location'),
+        'base' => 'node_content',
+        'description' => $t('Content Type to handle Locations'),
+        'body_label' => $t('Location description'),
+        'promote' => 0,
+        'status' => 1,
+        'comment' => 0,
+    );
+}
+
+function getTeamContentType() {
+    $t = get_t();
+    return array(
+        'type' => 'fordere_team',
+        'name' => $t('Team'),
+        'base' => 'node_content',
+        'description' => $t('Content Type to handle Teams'),
+        'body_label' => $t('Team description'),
+        'promote' => 0,
+        'status' => 1,
+        'comment' => 0,
+    );
+}
+
+function getGameFields() {
+    $fields = getGameBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['type'] = 'text';
+    }
+
+    return $fields;
+}
+
+function getGameFieldInstances() {
+    $fields = getGameBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['widget'] = array(
+            'type' => 'text_textfield',
+        );
+    }
+
+    return $fields;
+}
+
+function getGameBaseFields() {
+    $t = get_t();
+    $fields = array();
+
+    $fields['game_type'] = array(
+        'field_name' => 'game_type',
+        'label' => $t('Game Type'),
+    );
+
+    $fields['game_teamhomeid'] = array(
+        'field_name' => 'game_teamhomeid',
+        'label' => $t('Heimteam'),
+    );
+
+    $fields['game_teamguestid'] = array(
+        'field_name' => 'game_teamguestid',
+        'label' => $t('Gastteam'),
+    );
+
+    $fields['game_dateregistered'] = array(
+        'field_name' => 'game_dateregistered',
+        'label' => $t('Registrierungsdatum'),
+    );
+
+    $fields['game_dateplay'] = array(
+        'field_name' => 'game_dateplay',
+        'label' => $t('Spieldatum'),
+    );
+
+    $fields['game_locationid'] = array(
+        'field_name' => 'game_locationid',
+        'label' => $t('Location-ID'),
+    );
+
+    $fields['game_pointteamhome'] = array(
+        'field_name' => 'game_pointteamhome',
+        'label' => $t('Punkte Heimteam'),
+    );
+
+    $fields['game_pointteamguest'] = array(
+        'field_name' => 'game_pointteamguest',
+        'label' => $t('Punkte Gastteam'),
+    );
+
+    return $fields;
+}
+
+function getLocationFields() {
+    $fields = getLocationBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['type'] = 'text';
+    }
+
+    return $fields;
+}
+
+function getLocationFieldInstances() {
+    $fields = getLocationBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['widget'] = array(
+            'type' => 'text_textfield',
+        );
+    }
+
+    return $fields;
+}
+
+function getLocationBaseFields() {
+    $t = get_t();
+    $fields = array();
+
+    $fields['location_name'] = array(
+        'field_name' => 'location_name',
+        'label' => $t('Name of the location'),
+    );
+
+    $fields['location_website'] = array(
+        'field_name' => 'location_website',
+        'label' => $t('Website'),
+    );
+
+    $fields['location_longitude'] = array(
+        'field_name' => 'location_longitude',
+        'label' => $t('Longitude for Google Maps'),
+    );
+
+    $fields['location_latitude'] = array(
+        'field_name' => 'location_latitude',
+        'label' => $t('Latitude for Google Maps'),
+    );
+
+    $fields['location_openhour'] = array(
+        'field_name' => 'location_openhour',
+        'label' => $t('OpenHours...'),
+    );
+
+    $fields['location_image'] = array(
+        'field_name' => 'location_image',
+        'label' => $t('Banner'),
+    );
+
+    return $fields;
+}
+
+function getTeamFields() {
+    $fields = getTeamBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['type'] = 'text';
+    }
+
+    return $fields;
+}
+
+function getTeamFieldInstances() {
+    $fields = getTeamBaseFields();
+
+    foreach ($fields as $key => $value) {
+        $fields[$key]['widget'] = array(
+            'type' => 'text_textfield',
+        );
+    }
+
+    return $fields;
+}
+
+function getTeamBaseFields() {
+    $t = get_t();
+    $fields = array();
+
+    $fields['team_name'] = array(
+        'field_name' => 'team_name',
+        'label' => $t('name of the Team'),
+    );
+
+    $fields['team_locationid'] = array(
+        'field_name' => 'team_locationid',
+        'label' => $t('Homelocation'),
+    );
+    
+    return $fields;
+}

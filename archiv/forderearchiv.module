@@ -1,0 +1,174 @@
+<?php
+
+function forderearchiv_menu() {
+
+	$items = array ();
+
+
+
+	$items['archiv'] = array('title' => 'Archiv',
+			'page callback' => 'forderearchiv_internal_archiv',
+			'access callback' => true );
+	
+	$seasons = Season::getAllSeasons ();
+	foreach ( $seasons as $season ) {
+
+		if($season -> phase != 5)
+		{
+			continue;
+		}
+		
+		$items['archiv/season' . $season ->seasonId] = array('title' => 'Archiv ' . $season -> name,
+				'page callback' => 'forderearchiv_internal_archivseason',
+				'page arguments' => array (
+						$season -> seasonId
+				),
+				'access callback' => true );
+
+
+		foreach ($season -> championschips as $champ)
+		{
+			$arrPrefix = 'archiv/season' . $season -> seasonId .'/champ' . $champ -> getId() ;
+			$items[$arrPrefix] = array('title' => $champ -> getName(),
+					'page callback' => 'forderearchiv_internal_archivchamp',
+					'page arguments' => array (
+							$champ -> getId()
+					),
+					'access callback' => true );
+			
+			
+			$items[$arrPrefix . '/teams'] = array('title' => 'Teams',
+					'page callback' => 'forderearchiv_internal_teams',
+					'page arguments' => array (
+							$champ -> getId()
+					),
+					'access callback' => true );
+				
+				
+
+			$items[$arrPrefix . '/table'] = array('title' => 'Tabelle',
+					'page callback' => 'forderearchiv_internal_table',
+					'page arguments' => array (
+							$champ -> getId()
+					),
+					'access callback' => true , );
+
+			if($champ instanceof League)
+			{
+				$items[$arrPrefix . '/matches'] = array('title' => 'Tabelle',
+						'page callback' => 'forderearchiv_internal_matches',
+						'page arguments' => array (
+								$champ -> getId()
+						),
+						'access callback' => true , );
+			}
+
+			if($champ instanceof Cup)
+			{
+				$items[$arrPrefix . '/bracket'] = array('title' => 'Bracket',
+						'page callback' => 'forderearchiv_internal_bracket',
+						'page arguments' => array (
+								$champ -> getId()
+						),
+						'access callback' => true , );
+			}
+		}
+	}
+	return $items;
+}
+
+
+function forderearchiv_internal_teams($championschipId)
+{
+	$champ = Championschip::CreateChampionschip ( $championschipId );
+	drupal_set_title ( "" );
+	$type = $champ->getTeamThemeType ();
+	return theme ( 'teams', array (
+			'teams' => runChampionschipMethod ( $championschipId, 'getTeams' ),
+			'type' => $type
+	) );
+}
+
+function forderearchiv_internal_table($championschipId)
+{
+	$champ = Championschip::CreateChampionschip ( $championschipId );
+	drupal_set_title ( "" );
+	return runChampionschipMethod ( $championschipId, 'getCurrentState' );
+}
+
+function forderearchiv_internal_matches($championschipId)
+{
+	GameFactory::loadGames ( $champId );
+	$league = Championschip::CreateChampionschip ( $champId );
+	$leagues = $league->getLeagues ();
+
+	$out = '';
+	foreach ( $leagues as $leagueId => $leagueName ) {
+		$out .= '<h3>' . $leagueName . '</h3><table class="fordere_matches_table">';
+		$groups = $league->getLeagueGroups ( $leagueId );
+		foreach ( $groups as $groupId => $groupName ) {
+			//TODO: Riesen WTF
+			if ($groupId == 0) {
+				$groupId = 1;
+			}
+			$teams = $league->getTeamsForGroup ( $leagueId, $groupId );
+
+			$out .= '<tr><td>&nbsp;</td>';
+			foreach ( $teams as $team ) {
+				$out .= '<td class="fordere_matches_teamheader">' . $team->getShortName () . '</td>';
+			}
+			$out .= '</tr>';
+
+			foreach ( $teams as $team1 ) {
+				$out .= '<tr><td class="fordere_matches_teamname">' . $team1->getShortNamePointed ( 20 ) . '</td>';
+				foreach ( $teams as $team2 ) {
+					if ($team1->id == $team2->id) {
+						$out .= '<td class="fordere_matches_nogame">/</td>';
+					} else {
+						$game = GameFactory::getGamebyTeam ( $team1->id, $team2->id, $champId );
+
+						switch ($game->state) {
+							case 1 :
+								$out .= '<td class="fordere_matches_created">';
+								break;
+							case 2 :
+								$out .= '<td class="fordere_matches_planned">';
+								break;
+							case 3 :
+								$out .= '<td class="fordere_matches_finished">';
+								break;
+						}
+						$out .= $game->getResult () . '</td>';
+					}
+				}
+				$out .= '</tr>';
+			}
+		}
+		$out .= '</table>';
+	}
+
+	return $out;
+}
+
+function forderearchiv_internal_archivchamp($champId)
+{
+	$champ = Championschip::CreateChampionschip($champId);
+	return "In diesem Bereich findest du die Resultate zu " . $champ -> getName();
+}
+
+function forderearchiv_internal_archivseason($seasonId)
+{
+	$season = new Season($seasonId);
+	return "In diesem Bereich findest du die Resultate von " . $season -> name;
+}
+
+function forderearchiv_internal_archiv()
+{
+	return "Willkommen im Archiv von fordere. <br />Hier findest du die Resultate aller bereits gespielten Saisons.";
+}
+
+
+function forderearchiv_internal_bracket($championschipId)
+{
+	return "Archiv bracket";
+}

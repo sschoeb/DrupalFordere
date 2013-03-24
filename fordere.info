@@ -1,0 +1,12 @@
+name = Fordere
+description = Module for fordere.ch
+core = 7.x
+package=Fordere
+files[]=includes/Championschip.php
+files[]=includes/Cup.php
+files[]=includes/Game.php
+files[]=includes/League.php
+files[]=includes/Season.php
+files[]=includes/Team.php
+files[]=includes/Player.php
+files[]=includes/Location.php
