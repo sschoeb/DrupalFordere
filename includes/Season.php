@@ -175,22 +175,17 @@ class Season {
 				'#description' => '
 				<div class="row">
 				 <div class="twelve columns">
-    <div class="panel callout radius">
+    <div class="panel">
       <h3>T-Shirt Aktion 2013</h3>
-      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die M&ouml;glichkeit f&uuml;r nur 10.- ein Shirt bei deiner Anmeldung mitzubestellen.</p>
+      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die einmalige M&ouml;glichkeit f&uuml;r nur 10.- ein super cooles Shirt von fordere.ch zu kaufen. Diese Aktion l&auml;ft nur bis zum Ende der Anmeldephase. </br>
+	  <a class="button" href="/drupal/season/orderShirt"/>Shirt bestellen</a></p>
     </div>
   </div>
 				</div>
-				Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison. Hier siehst du s&auml;mtliche Wettbewerbe welche wir diese Saison durchf&uuml;hren.
-<br />
-	
-		Im Gegensatz zur regul&auml;ren Liga und Cup kannst Du in der Ullrich-Liga einen anderen
-		Spielpartner w&auml;hlen!
-		<br /> <br/>
-		Du hast folgende Spielm&ouml;glichkeiten:
-		<ul><li>nur regul&auml;re Liga und Cup spielen</li>
-		<li>regul&auml;re Liga und Cup plus Ullrich-Liga spielen</li>
-		<li>nur Ullrich-Liga spielen</li></ul>' 
+				<div class="row"><div class="twelve columns">
+				<p>Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison.<br />
+				Hier kannst du dich f&uuml;r die einzelnen Wettbewerbe registrieren. Prop Person kostet dies 25.-. Dabei ist egal bei wievielen Disziplinen du teilnimmst.</p>
+</div></div>' 
 		);
 		
 		return $infos;
