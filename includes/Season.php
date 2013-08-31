@@ -172,16 +172,25 @@ class Season {
 				'#theme' => 'themeregisterinfo', 
 				'child' => $out, 
 				'#title' => t ( 'Anmeldephase' ), 
-				'#description' => 'Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison. Hier siehst du s&auml;mtliche Wettbewerbe welche wir diese Saison durchf&uuml;hren.In dieser Saison hast Du die M&ouml;glichkeit, neben der regul&auml;ren Liga und Cup auch an der Ullrich-Liga teilzunehmen.
+				'#description' => '
+				<div class="row">
+				 <div class="twelve columns">
+    <div class="panel callout radius">
+      <h3>T-Shirt Aktion 2013</h3>
+      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die M&ouml;glichkeit f&uuml;r nur 10.- ein Shirt bei deiner Anmeldung mitzubestellen.</p>
+    </div>
+  </div>
+				</div>
+				Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison. Hier siehst du s&auml;mtliche Wettbewerbe welche wir diese Saison durchf&uuml;hren.
 <br />
-		Du hast folgende Spielm&ouml;glichkeiten:
-
-		<ul><li>nur regul&auml;re Liga + Cup spielen</li>
-		<li>regul&auml;re Liga + Cup plus Ullrich-Liga spielen</li>
-		<li>nur Ullrich-Liga spielen</li></ul>
-
+	
 		Im Gegensatz zur regul&auml;ren Liga und Cup kannst Du in der Ullrich-Liga einen anderen
-		Spielpartner w&auml;hlen!' 
+		Spielpartner w&auml;hlen!
+		<br /> <br/>
+		Du hast folgende Spielm&ouml;glichkeiten:
+		<ul><li>nur regul&auml;re Liga und Cup spielen</li>
+		<li>regul&auml;re Liga und Cup plus Ullrich-Liga spielen</li>
+		<li>nur Ullrich-Liga spielen</li></ul>' 
 		);
 		
 		return $infos;

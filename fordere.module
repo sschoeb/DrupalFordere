@@ -656,38 +656,40 @@ function seasonDashboard() {
 
 function theme_themeregisterinfo($vars) {
 	$output = '<h2>' . $vars ['element'] ['#title'] . '</h2>';
-	$output .= '<div>';
 
 	if (trim ( $vars ['element'] ['#description'] ) != '') {
-		$output .= '<p>' . $vars ['element'] ['#description'] . '</p>';
+		$output .= $vars ['element'] ['#description'] ;
 	}
+	
+	$output .= "<div class='row'>";
 	foreach ( $vars ['element'] ['child'] as $champ ) {
-		$output .= '<div>';
+$output .= "<div class='four columns'><ul class='pricing-table'>";
 
-		$output .= '<h3>' . $champ ['title'] . '</h3>';
+		$output .= '<li class="title">' . $champ ['title'] . '</li>';
 
 		if ($champ ['description'] != '') {
-			$output .= $champ ['description'] . '<br />';
+			$output .= '<li class="description">'.$champ ['description'] . '</li>';
 		}
 
 		if ($champ ['canregister'] && ! $champ ['nodirectregister']) {
-			$output .= '<a href="' . $champ ['link'] . '"/>Anmelden</a>';
+			$output .= '<li class="cta-button"><a class="button" href="' . $champ ['link'] . '"/>Anmelden</a></li>';
 		} else if (! $champ ['canregister']) {
-			$output .= 'Du bist bereits angemeldet:' . '<br /><i>';
+			$output .= '<li class="description">Du bist bereits angemeldet:' . '<br /><i>';
 			$output .= 'Team: ' . $champ ['team'] . '<br />';
 			$output .= 'Mitspieler: ' . $champ ['player2'] . '<br/>';
-			$output .= 'Heimlokal: ' . $champ ['homelocation'] . '<br/>';
+			$output .= 'Heimlokal: ' . $champ ['homelocation'] . '<br/></li>';
 
 			if (isset ( $champ ['league_wish'] )) {
-				$output .= 'Wunschliga: ' . $champ ['league_wish'];
+				$output .= '<li class="description">Wunschliga: ' . $champ ['league_wish'] . '</li>';
 			}
-			$output .= '</i>';
 		}
+$output .= "</ul></div>";
 
-		$output .= '</div>';
 	}
+	
+	$output .= "</div>";
 
-	$output .= '</div>';
+
 	return $output;
 }
 
