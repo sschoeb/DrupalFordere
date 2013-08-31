@@ -172,16 +172,16 @@ class Season {
 				'#theme' => 'themeregisterinfo', 
 				'child' => $out, 
 				'#title' => t ( 'Anmeldephase' ), 
-				'#description' => 'Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison. Hier siehst du s&auml;mtliche Wettbewerbe welche wir diese Saison durchf&uuml;hren.In dieser Saison hast Du die M&ouml;glichkeit, neben der regul&auml;ren Liga und Cup auch am Ullrich-Cup teilzunehmen.
+				'#description' => 'Wir befinden uns im Moment in der Anmeldephase f&uuml;r die aktuelle Saison. Hier siehst du s&auml;mtliche Wettbewerbe welche wir diese Saison durchf&uuml;hren.In dieser Saison hast Du die M&ouml;glichkeit, neben der regul&auml;ren Liga und Cup auch an der Ullrich-Liga teilzunehmen.
 <br />
 		Du hast folgende Spielm&ouml;glichkeiten:
 
 		<ul><li>nur regul&auml;re Liga + Cup spielen</li>
-		<li>regul&auml;re Liga + Cup plus Ullrich-Cup spielen</li>
-		<li>nur Ullrich-Cup spielen</li></ul>
+		<li>regul&auml;re Liga + Cup plus Ullrich-Liga spielen</li>
+		<li>nur Ullrich-Liga spielen</li></ul>
 
-		Im Gegensatz zur regul&auml;ren Liga und Cup kannst Du im Ullrich-Cup einen anderen
-		Spielpartner w&auml;hlen! Im Ullrich-Cup gibt es keine St&auml;rkeklassen. Es wird ein normales Doppel-K.O. gespielt.' 
+		Im Gegensatz zur regul&auml;ren Liga und Cup kannst Du in der Ullrich-Liga einen anderen
+		Spielpartner w&auml;hlen!' 
 		);
 		
 		return $infos;
