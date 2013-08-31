@@ -177,7 +177,8 @@ class Season {
 				 <div class="twelve columns">
     <div class="panel">
       <h3>T-Shirt Aktion 2013</h3>
-      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die einmalige M&ouml;glichkeit f&uuml;r nur 10.- ein super cooles Shirt von fordere.ch zu kaufen. Diese Aktion l&auml;ft nur bis zum Ende der Anmeldephase. </br>
+      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die einmalige M&ouml;glichkeit f&uuml;r nur 10.- ein super cooles Shirt von fordere.ch zu kaufen. Diese Aktion l&auml;ft nur bis zum Ende der Anmeldephase. 
+	  </br>
 	  <a class="button" href="/drupal/season/orderShirt"/>Shirt bestellen</a></p>
     </div>
   </div>

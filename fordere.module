@@ -69,6 +69,10 @@ function fordere_permission() {
 			'fordere season register' => array (
 					'title' => 'Saison Anmeldung',
 					'description' => 'Berechtigt den Benutzer das register-Forum-Formular auszufüllen'
+			),
+			'fordere order shirt' => array (
+					'title' => 'Order Shirt',
+					'description' => 'Erlaubt es, dass der Benutzer Shirts bestellen kann'
 			)
 	);
 }
@@ -359,6 +363,17 @@ function fordere_menu() {
 			'access callback' => 'user_access',
 			'access arguments' => array (
 					'fordere season details'
+			)
+	);
+	
+	$items ['season/orderShirt'] = array (
+			'title' => 'T-Shirt bestellen',
+			'page callback' => 'drupal_get_form',
+			'access arguments' => array (
+					'fordere order shirt'
+			),
+			'page arguments' => array (
+					'orderShirtsForm'
 			)
 	);
 
@@ -691,6 +706,51 @@ $output .= "</ul></div>";
 
 
 	return $output;
+}
+
+function orderShirtsForm($form, $form_state)
+{
+		$form ['title'] = array (
+				'#type' => 'item', 
+				'#title' => t ( "T-Shirt bestellen" ), 
+				'#description' => "Hier hast du die Möglichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-"
+		);
+		$form ['quantity'] = array (
+				'#type' => 'textfield', 
+				'#title' => t ( 'Anzahl' ), 
+				'#default_value' => "1",
+				'#required' => true 
+		);
+		$form ['size'] = array (
+				'#type' => 'select', 
+				'#title' => t ( 'Grösse' ), 
+				'#options' => array("XS", "S", "M", "L", "XL", "XXL") 
+		);
+		$form ['gender'] = array (
+				'#type' => 'select', 
+				'#title' => t ( 'Schnitt' ), 
+				'#options' => array("Mann", "Frau") 
+		);
+		
+		$form ['submit'] = array (
+				'#type' => 'submit', 
+				'#value' => 'Bestellung absenden' 
+		);
+		return $form;
+}
+
+function orderShirtsForm_validate($form, $form_state)
+{
+	$quantity = $form['quantity']['#value'];
+	if($quantity <=0)
+	{
+		form_error($form, t('Mindestens ein Shirt muss schon angegeben werden damit eine Bestellung funktioniert...'));
+	}
+}
+
+function orderShirtsForm_submit($form, $form_state)
+{
+	
 }
 
 function getTeamAdminForm($form, $form_state, $championschipId) {
