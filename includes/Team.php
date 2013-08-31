@@ -384,7 +384,7 @@ class Team {
 		return Team::createNewPlayer ( $seasonId, $userId );
 	}
 	
-	private static function createNewPlayer($seasonId, $userId) {
+	public static function createNewPlayer($seasonId, $userId) {
 		$playerId = db_insert ( 'fordere_player' )->fields ( array (
 				'seasonId' => $seasonId, 
 				'DrupalUserId' => $userId 
