@@ -1,4 +1,5 @@
 <?php
+
 function fordere_block_info() {
 	return array (
 			'upcomminggames' => array (
@@ -9,6 +10,7 @@ function fordere_block_info() {
 			) 
 	);
 }
+
 function fordere_block_view($blockname) {
 	$season = Season::getCurrentSeason ();
 	
@@ -24,6 +26,7 @@ function fordere_block_view($blockname) {
 			);
 	}
 }
+
 function fordere_permission() {
 	return array (
 			'fordere show dashboard' => array (
@@ -93,12 +96,12 @@ function fordere_node_info() {
 					'locked' => FALSE 
 			),
 			'fordere_team' => array (
-					'name' => t ( 'Team' ),
+					'name' => t ( 'Team zz' ),
 					'base' => 'fordere',
 					'base table' => 'node',
-					'description' => t ( 'Team' ),
+					'description' => t ( 'Team aaa' ),
 					'has_title' => TRUE,
-					'title_label' => t ( 'Team' ),
+					'title_label' => t ( 'Team bbb' ),
 					'locked' => FALSE 
 			),
 			'fordere_location' => array (
@@ -141,6 +144,7 @@ function fordere_forms($form_id, $args) {
 	
 	return $forms;
 }
+
 function fordere_form_builder($form, &$form_state, $form_id, $args) {
 	switch ($form_id) {
 		case 'fordere_dashboard_' . $args [0] :
@@ -153,6 +157,7 @@ function fordere_form_builder($form, &$form_state, $form_id, $args) {
 			return $data;
 	}
 }
+
 function fordere_form_builder_submit($form, $form_state) {
 	$formid = $form ['#form_id'];
 	if (strstr ( $formid, 'fordere_dashboard_' )) {
@@ -178,6 +183,7 @@ function fordere_form_builder_submit($form, $form_state) {
 		$champ->registerGame ( $form_state );
 	}
 }
+
 function fordere_form_builder_validate($form, $form_state) {
 	$formid = $form ['#form_id'];
 	if (strstr ( $formid, 'fordere_dashboard_' )) {
@@ -425,10 +431,12 @@ function fordere_menu() {
 	
 	return $items;
 }
+
 function addLateTeam($champId, $teamId) {
 	$champ = Championschip::CreateChampionschip ( $champId );
 	$champ->createGamesLateTeam ( $teamId );
 }
+
 function fordere_mail($key, &$message, $params) {
 	switch ($key) {
 		case 'confirmation' :
@@ -445,6 +453,7 @@ function fordere_mail($key, &$message, $params) {
 			break;
 	}
 }
+
 function getOrderConfirmationMail($params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
@@ -465,6 +474,7 @@ function getOrderConfirmationMail($params) {
 			";
 	return t ( $message, $args );
 }
+
 function getGameReservationMail($params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
@@ -483,6 +493,7 @@ function getGameReservationMail($params) {
 			Wir bitten euch rechtzeitig mit der Partie zu beginnen um anschliessende Begegnungen nicht zu behindern.";
 	return t ( $message, $args );
 }
+
 function formatAdditonalFields($fields) {
 	if (count ( $fields ) == 0) {
 		return "";
@@ -495,6 +506,7 @@ function formatAdditonalFields($fields) {
 	
 	return $output;
 }
+
 function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
 	$args = array (
 			
@@ -588,6 +600,7 @@ function getRegisterForm($form, &$form_state, $championschipId) {
 			'#markup' => 'Championschip is not in current season!' 
 	);
 }
+
 function getRegisterForm_validate($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
@@ -597,6 +610,7 @@ function getRegisterForm_validate($form, &$form_state) {
 		form_set_error ( '', $ex->getMessage () );
 	}
 }
+
 function getRegisterForm_submit($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
@@ -607,15 +621,18 @@ function getRegisterForm_submit($form, &$form_state) {
 		drupal_set_message ( "Anmeldeformular nicht korrekt ausgefuellt", 'error' );
 	}
 }
+
 function isUserProfileComplete() {
 	global $user;
 	$currUser = user_load ( $user->uid );
 	return (strlen ( $currUser->field_firstname [LANGUAGE_NONE] [0] ['value'] ) > 0 && strlen ( $currUser->field_lastname [LANGUAGE_NONE] [0] ['value'] ) > 0);
 }
+
 function getUserProfileEditLink() {
 	global $user;
 	return url ( 'user/' . $user->uid . '/edit' );
 }
+
 function seasonDashboard() {
 	$season = Season::getCurrentSeason ();
 	$msg = '';
@@ -671,6 +688,7 @@ function seasonDashboard() {
 			'#markup' => '<p>' . t ( $msg ) . '</p>' 
 	);
 }
+
 function theme_themeregisterinfo($vars) {
 	$output = '<h2>' . $vars ['element'] ['#title'] . '</h2>';
 	
@@ -707,6 +725,7 @@ function theme_themeregisterinfo($vars) {
 	
 	return $output;
 }
+
 function orderShirtsForm($form, $form_state) {
 	$form ['title'] = array (
 			'#type' => 'item',
@@ -746,12 +765,14 @@ function orderShirtsForm($form, $form_state) {
 	);
 	return $form;
 }
+
 function orderShirtsForm_validate($form, $form_state) {
 	$quantity = $form ['quantity'] ['#value'];
 	if ($quantity <= 0) {
 		form_error ( $form, t ( 'Mindestens ein Shirt muss schon angegeben werden damit eine Bestellung funktioniert...' ) );
 	}
 }
+
 function orderShirtsForm_submit($form, $form_state) {
 	$params = array (
 			'quantity' => $form ['quantity'] ['#value'],
@@ -767,33 +788,40 @@ function orderShirtsForm_submit($form, $form_state) {
 	
 	drupal_mail ( 'fordere', 'orderconfirmation', $mails, language_default (), $params );
 }
+
 function getTeamAdminForm($form, $form_state, $championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "Team Admin " . $champ->getName () );
 	return $champ->getTeamAdminForm ( $form, $form_state );
 }
+
 function getMatchAdminForm($form, $form_state, $championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "Match Admin " . $champ->getName () );
 	$data = $champ->getMatchAdminForm ( $form, $form_state );
 	return $data;
 }
+
 function getMatchAdminForm_submit($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
 	$cs->createGames ( $form, $form_state );
 }
+
 function league_callback($form, $form_state) {
 	return $form;
 }
+
 function league_callback_submit($form, $form_state) {
 	$form_state ['rebuild'] = FALSE;
 	die ();
 }
+
 function league_callback_enter($form, $form_state) {
 	// Championschip::registerGame ( $form_state );
 	return $form;
 }
+
 function league_callback_result($form, $form_state) {
 	$champid = $form_state ['values'] ['children'] ['championschip'];
 	
@@ -802,21 +830,25 @@ function league_callback_result($form, $form_state) {
 	
 	return $form;
 }
+
 function confirmleague_callback($form, $form_state) {
 	$champid = $form_state ['values'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->teamAdminAjaxCallback ( $form, $form_state );
 }
+
 function theme_adminteam($variables) {
 	$champid = $variables ['form'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->themeTeamAdmin ( $variables );
 }
+
 function theme_adminmatch($variables) {
 	$champid = $variables ['form'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->themeTeamAdmin ( $variables );
 }
+
 function fordere_theme($existing, $type, $theme, $path) {
 	$items = array (
 			'themeregisterinfo' => array (
@@ -858,14 +890,17 @@ function fordere_theme($existing, $type, $theme, $path) {
 	
 	return $items;
 }
+
 function theme_dashboard_running($form) {
 	return drupal_render ( $arr );
 }
+
 function seasonTable($championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "" );
 	return runChampionschipMethod ( $championschipId, 'getCurrentState' );
 }
+
 function seasonTeams($championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "" );
@@ -875,6 +910,7 @@ function seasonTeams($championschipId) {
 			'type' => $type 
 	) );
 }
+
 function seasonMatches($champId) {
 	GameFactory::loadGames ( $champId );
 	$league = Championschip::CreateChampionschip ( $champId );
@@ -935,11 +971,13 @@ function seasonMatches($champId) {
 	
 	return $out;
 }
+
 function champMails($champId) {
 	$champ = Championschip::CreateChampionschip ( $champId );
 	
 	return "<a href='mailto:" . $champ->getUserMails () . "'>Mail an alle aus: " . $champ->getName ();
 }
+
 function updateroles($champId, $roleId, $round = null) {
 	if ($round == null) {
 		addPlayerPermissions ( $roleId );
@@ -951,17 +989,22 @@ function updateroles($champId, $roleId, $round = null) {
 	
 	return "DONE";
 }
+
 function seasonAdminDashoboard() {
 	return "<table><tr><th>Name</th><th>Status</th></tr></table>";
 }
+
 function admindashboard() {
 	return "JO";
 }
+
 function seasonRules($championschipId) {
 	return runChampionschipMethod ( $championschipId, 'getRules' );
 }
+
 function removereservation($form, $form_state) {
 }
+
 function runChampionschipMethod($championschipId, $method) {
 	if (! isset ( $championschipId ) || ! is_numeric ( $championschipId )) {
 		// TODO: Error Handling
@@ -972,6 +1015,7 @@ function runChampionschipMethod($championschipId, $method) {
 	$championship = Championschip::CreateChampionschip ( $championschipId );
 	return $championship->$method ();
 }
+
 function fordere_preprocess_node(&$variables) {
 	$nodeType = $variables ['type'];
 	
@@ -1005,6 +1049,7 @@ function fordere_preprocess_node(&$variables) {
 			break;
 	}
 }
+
 function getResultData($team) {
 	$out = array ();
 	foreach ( $team->getChampionschips () as $champ ) {
@@ -1025,6 +1070,7 @@ function getResultData($team) {
 	}
 	return $out;
 }
+
 function compareGames($game1, $game2) {
 	if ($game1->playDate < $game2->playDate) {
 		return - 1;
@@ -1032,10 +1078,12 @@ function compareGames($game1, $game2) {
 	
 	return 1;
 }
+
 function getmatches() {
 	$season = Season::getCurrentSeason ();
 	return $season->getUpcommingGames ();
 }
+
 function removePlayerFromRole($roleId) {
 	$result = db_query ( 'SELECT drupal_users.uid FROM drupal_users_roles LEFT JOIN drupal_users  ON drupal_users_roles.uid = drupal_users.uid WHERE drupal_users_roles.rid=:s', array (
 			':s' => $roleId 
@@ -1048,6 +1096,7 @@ function removePlayerFromRole($roleId) {
 	
 	user_multiple_role_edit ( $uids, 'remove_role', $roleId );
 }
+
 function addPlayerPermissions($roleId) {
 	removePlayerFromRole ( $roleId );
 	
@@ -1071,6 +1120,7 @@ function addPlayerPermissions($roleId) {
 	
 	return "DONE";
 }
+
 function fordere_cup_bracket($champId, $beginRound) {
 	if (! is_numeric ( $beginRound ) || $beginRound < 0) {
 		return "No bracket available for this round";
@@ -1101,6 +1151,7 @@ function custom_add_role_to_user($uid, $role_name) {
 		), 'add_role', $role->rid );
 	}
 }
+
 function fordere_admin() {
 	$form = array ();
 	
