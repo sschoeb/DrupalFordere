@@ -1,0 +1,5 @@
+name = Fordere Permission Administration
+description = Permission administrationswerkzeuge fuer fordere.ch
+dependencies[] = fordere
+package=Fordere
+core = 7.x

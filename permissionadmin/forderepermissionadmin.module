@@ -1,0 +1,73 @@
+<?php
+
+function forderepermissionadmin_menu() {
+	$items = array ();
+	
+	$items ['forderepermissions'] = array (
+			'title' => 'Verwaltung',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'forderepermissions_internal_getPermissionForm' 
+			),
+			'access arguments' => array (
+					'fordere administration' 
+			) 
+	);
+	
+	return $items;
+}
+
+function forderepermissionadmin_permissions() {
+	return array (
+			'fordere permissions' => array (
+					'title' => 'Fordere Permission Administration',
+					'description' => 'Administrieren der Permissions fuer fordere' 
+			) 
+	);
+}
+
+function forderepermissions_internal_getPermissionForm() {
+	$form ['allplayeroptions'] = array (
+			'#type' => "select",
+			'#title' => t ( 'Alle Spieler der aktuellen Saison' ),
+			'#description' => t ( 'Alle Spieler die an irgendeinem Wettbewerb in dieser Saison teilnehmen.' ) 
+	);
+	
+	$form ['allnonplayer'] = array (
+			'#type' => "select",
+			'#title' => t ( 'Alle NICHT-Spieler der aktuellen Saison' ),
+			'#description' => t ( 'Alle fordere.ch-User welche auf der Webseite registriert sind jedoch nicht an einem Wettbewerb teilnehmen.' ) 
+	);
+	
+	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
+		if ($champ instanceof Cup) {
+			$form [$champ->getId ()] = array (
+					'#type' => "select",
+					'#title' => "Alle Spieler in " . $champ->getName () 
+			);
+		} else if ($champ instanceof League) {
+			
+			$form [$champ->getId ()] = array (
+					'#type' => "select",
+					'#title' => "Alle Spieler in " . $champ->getName () 
+			);
+			
+			$leagues = $champ->getLeagues ();
+			foreach ( $leagues as $id => $name ) {
+				$form [$champ->getId () . "_league_" . $id] = array (
+						'#type' => "select",
+						'#title' => "Alle Spieler in " . $champ->getName () . " - " . $name . " (ID:" . $id . ")" 
+				);
+			}
+		}
+	}
+	
+	$form ['saveButton'] = array (
+			'#value' => t ( 'Save permissions' ),
+			'#type' => 'submit',
+			'#prefix' => '<p>',
+			'#sufix' => '</p>' 
+	);
+	
+	return $form;
+}
