@@ -1,92 +1,88 @@
 <?php
-
 function fordere_block_info() {
 	return array (
 			'upcomminggames' => array (
-					'info' => 'Abgemachte Spiele'
+					'info' => 'Abgemachte Spiele' 
 			),
 			'shortlyplayedgames' => array (
-					'info' => 'Kuerzlich gespielte Spiele'
-			)
+					'info' => 'Kuerzlich gespielte Spiele' 
+			) 
 	);
 }
-
 function fordere_block_view($blockname) {
 	$season = Season::getCurrentSeason ();
-
+	
 	switch ($blockname) {
 		case 'upcomminggames' :
 			return array (
-			'content' => '<h2>Abgemachte Spiele</h2>' . $season->getUpcommingGames ()
+					'content' => '<h2>Abgemachte Spiele</h2>' . $season->getUpcommingGames () 
 			);
-
+		
 		case 'shortlyplayedgames' :
 			return array (
-			'content' => $season->getShortlyPlayedGames ()
+					'content' => $season->getShortlyPlayedGames () 
 			);
 	}
 }
-
 function fordere_permission() {
 	return array (
 			'fordere show dashboard' => array (
 					'title' => 'Fordere Dashboard',
-					'description' => 'Anzeigen des Dashboard'
+					'description' => 'Anzeigen des Dashboard' 
 			),
 			'fordere player detail' => array (
 					'title' => 'Fordere Spieler Details',
-					'description' => 'Anzeigen von Spieler-Details'
+					'description' => 'Anzeigen von Spieler-Details' 
 			),
 			'fordere admin' => array (
 					'title' => 'Fordere Administration',
-					'description' => 'Erm&ouml;glicht Zugriff auf den Administrationsbereich der Saison'
+					'description' => 'Erm&ouml;glicht Zugriff auf den Administrationsbereich der Saison' 
 			),
 			'fordere admin teams' => array (
 					'title' => 'Fordere Team-Administration',
-					'description' => 'Erm&ouml;glicht Zugriff auf die Verwaltung der Teams'
+					'description' => 'Erm&ouml;glicht Zugriff auf die Verwaltung der Teams' 
 			),
 			'fordere administration payment' => array (
 					'title' => 'Fordere Administration Kasse',
-					'description' => 'Administration der bezahlten Beiträge für die aktuelle Saison'
-			) ,
-
+					'description' => 'Administration der bezahlten Beiträge für die aktuelle Saison' 
+			),
+			
 			'fordere admin matches' => array (
 					'title' => 'Fordere Match-Administration',
-					'description' => 'Erm&ouml;glicht das erstellen der Matches f&uuml;r eine Saison'
+					'description' => 'Erm&ouml;glicht das erstellen der Matches f&uuml;r eine Saison' 
 			),
 			'fordere showuserimage' => array (
 					'title' => 'Spieler Bilder anzeigen',
-					'description' => 'zeigt die Benutzerbilder an'
+					'description' => 'zeigt die Benutzerbilder an' 
 			),
 			'fordere admin season' => array (
 					'title' => 'Saison-Administration',
-					'description' => 'Administration der gesamten Saison mit den Wettbewerben'
+					'description' => 'Administration der gesamten Saison mit den Wettbewerben' 
 			),
 			'fordere season details' => array (
 					'title' => 'Saison-Details',
-					'description' => 'Kann die Teams/Tabelle/Begegnungen der aktuellen Saison anzeigen.'
+					'description' => 'Kann die Teams/Tabelle/Begegnungen der aktuellen Saison anzeigen.' 
 			),
 			'fordere season register' => array (
 					'title' => 'Saison Anmeldung',
-					'description' => 'Berechtigt den Benutzer das register-Forum-Formular auszufüllen'
+					'description' => 'Berechtigt den Benutzer das register-Forum-Formular auszufüllen' 
 			),
 			'fordere order shirt' => array (
 					'title' => 'Order Shirt',
-					'description' => 'Erlaubt es, dass der Benutzer Shirts bestellen kann'
-			)
+					'description' => 'Erlaubt es, dass der Benutzer Shirts bestellen kann' 
+			) 
 	);
 }
 
 // function fordere_entity_info_alter($entity_info) {
-// 	$entity_info ['node'] ['view modes'] ['full team'] = array (
-// 			'label' => t ( 'Team anzeige' ),
-// 			'custom settings' => TRUE
-// 	);
+// $entity_info ['node'] ['view modes'] ['full team'] = array (
+// 'label' => t ( 'Team anzeige' ),
+// 'custom settings' => TRUE
+// );
 // }
-
 function fordere_node_info() {
 	return array (
-
+			
 			'fordere_game' => array (
 					'name' => t ( 'Game' ),
 					'base table' => 'node',
@@ -94,7 +90,7 @@ function fordere_node_info() {
 					'description' => t ( 'Game' ),
 					'has_title' => TRUE,
 					'title_label' => t ( 'Game' ),
-					'locked' => FALSE
+					'locked' => FALSE 
 			),
 			'fordere_team' => array (
 					'name' => t ( 'Team' ),
@@ -103,7 +99,7 @@ function fordere_node_info() {
 					'description' => t ( 'Team' ),
 					'has_title' => TRUE,
 					'title_label' => t ( 'Team' ),
-					'locked' => FALSE
+					'locked' => FALSE 
 			),
 			'fordere_location' => array (
 					'name' => t ( 'Location' ),
@@ -112,27 +108,25 @@ function fordere_node_info() {
 					'description' => t ( 'Location' ),
 					'has_title' => TRUE,
 					'title_label' => t ( 'Location' ),
-					'locked' => FALSE
-			)
+					'locked' => FALSE 
+			) 
 	);
 }
 
 // function fordere_form($node, $form_state) {
-// 	$type = node_type_get_type ( $node );
-// 	$form ['title'] = array (
+// $type = node_type_get_type ( $node );
+// $form ['title'] = array (
 
-// 			'#type' => 'textfield',
-// 			'#title' => check_plain ( $type->title_label ),
-// 			'#default_value' => ! empty ( $node->title ) ? $node->title : '',
-// 			'#required' => TRUE,
-// 			'#weight' => - 5
-// 	);
+// '#type' => 'textfield',
+// '#title' => check_plain ( $type->title_label ),
+// '#default_value' => ! empty ( $node->title ) ? $node->title : '',
+// '#required' => TRUE,
+// '#weight' => - 5
+// );
 
-// 	return $form;
+// return $form;
 // }
-
 function fordere_forms($form_id, $args) {
-
 	$forms = array ();
 	if (0 !== strpos ( $form_id, 'fordere_dashboard' )) {
 		return $forms;
@@ -141,35 +135,31 @@ function fordere_forms($form_id, $args) {
 			'callback' => 'fordere_form_builder',
 			'callback arguments' => array (
 					$form_id,
-					$args
-			)
+					$args 
+			) 
 	);
-
+	
 	return $forms;
 }
-
 function fordere_form_builder($form, &$form_state, $form_id, $args) {
-
 	switch ($form_id) {
 		case 'fordere_dashboard_' . $args [0] :
 			$champ = Championschip::CreateChampionschip ( $args [0] );
 			$data = array (
 					'children' => $champ->getGamesToPlayForm ( $form_state ),
-					'#title' => $champ->getName ()
+					'#title' => $champ->getName () 
 			);
-
+			
 			return $data;
 	}
 }
-
 function fordere_form_builder_submit($form, $form_state) {
-
 	$formid = $form ['#form_id'];
 	if (strstr ( $formid, 'fordere_dashboard_' )) {
 		$split = explode ( '_', $formid );
 		$champId = $split [2];
 		$champ = Championschip::CreateChampionschip ( $champId );
-
+		
 		// TODO: Dependency on Button Value
 		if ($form_state ['triggering_element'] ['#value'] == 'Eintragen') {
 			$champ->enterResult ( $form_state );
@@ -179,18 +169,16 @@ function fordere_form_builder_submit($form, $form_state) {
 			$champ->cancelGame ( $form_state );
 			return;
 		}
-
+		
 		if ($form_state ['triggering_element'] ['#value'] == 'Resultat loeschen') {
 			$champ->removeResult ( $form_state );
 			return;
 		}
-
+		
 		$champ->registerGame ( $form_state );
 	}
 }
-
 function fordere_form_builder_validate($form, $form_state) {
-
 	$formid = $form ['#form_id'];
 	if (strstr ( $formid, 'fordere_dashboard_' )) {
 		$split = explode ( '_', $formid );
@@ -200,243 +188,247 @@ function fordere_form_builder_validate($form, $form_state) {
 			$champ->validateEnterResult ( $form_state );
 			return;
 		}
-
+		
 		$champ->validateRegisterGame ( $form_state );
 	}
 }
 
 // function fordere_help($path, $arg) {
 
-// 	//	menu_rebuild ();
+// // menu_rebuild ();
 
-
-// 	switch ($path) {
-// 		case "admin/help#fordere" :
-// 			return '<p>' . t ( "Displays links to nodes created on this date" ) . '</p>';
-// 			break;
-// 	}
-
+// switch ($path) {
+// case "admin/help#fordere" :
+// return '<p>' . t ( "Displays links to nodes created on this date" ) . '</p>';
+// break;
 // }
 
+// }
 function fordere_menu() {
-
 	$items = array ();
-
+	
+	$items ['admin/settings/fordere'] = array (
+			'title' => 'Fordere Einstellungen',
+			'description' => 'Admin page for fordere.ch module',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'fordere_admin' 
+			),
+			'access arguments' => array (
+					'administer fordere settings' 
+			),
+			'type' => MENU_NORMAL_ITEM 
+	);
+	
 	$items ['season'] = array (
 			'title' => 'Aktuelle Saison',
 			'page callback' => 'seasonDashboard',
-			'access callback' => true
+			'access callback' => true 
 	);
-
+	
 	$items ['season/registerform'] = array (
 			'title' => 'Anmelden',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array (
 					'getRegisterForm',
-					2
+					2 
 			),
-			'access callback' => true
+			'access callback' => true 
 	);
-
+	
 	$season = Season::getCurrentSeason ();
 	foreach ( $season->championschips as $champ ) {
 		$items ['season/' . $champ->getId ()] = array (
 				'title' => $champ->getName (),
 				'page callback' => 'seasonTable',
 				'page arguments' => array (
-						1
+						1 
 				),
 				'access callback' => 'user_access',
 				'access arguments' => array (
-						'fordere season details'
+						'fordere season details' 
 				),
-				'type' => MENU_NORMAL_ITEM
+				'type' => MENU_NORMAL_ITEM 
 		);
-
+		
 		$items ['season/' . $champ->getId () . '/table'] = array (
 				'title' => $champ->getCurrentStateDescription (),
 				'page callback' => 'seasonTable',
 				'page arguments' => array (
-						1
+						1 
 				),
 				'access callback' => 'user_access',
 				'access arguments' => array (
-						'fordere season details'
+						'fordere season details' 
 				),
-				'type' => MENU_DEFAULT_LOCAL_TASK
+				'type' => MENU_DEFAULT_LOCAL_TASK 
 		);
-
+		
 		$items ['season/' . $champ->getId () . '/teams'] = array (
 				'title' => 'Teams',
 				'page callback' => 'seasonTeams',
 				'page arguments' => array (
-						1
+						1 
 				),
 				'access callback' => 'user_access',
 				'access arguments' => array (
-						'fordere season details'
+						'fordere season details' 
 				),
-				'type' => MENU_LOCAL_TASK
+				'type' => MENU_LOCAL_TASK 
 		);
-
-		//TODO Lösung mit Champ die weiss was für menüitems es noch brauchts wäre wohl besser
+		
+		// TODO Lösung mit Champ die weiss was für menüitems es noch brauchts wäre wohl besser
 		if ($champ instanceof League) {
 			$items ['season/' . $champ->getId () . '/matches'] = array (
 					'title' => 'Begegnungen',
 					'page callback' => 'seasonMatches',
 					'page arguments' => array (
-							1
+							1 
 					),
 					'access callback' => 'user_access',
 					'access arguments' => array (
-							'fordere season details'
+							'fordere season details' 
 					),
-					'type' => MENU_LOCAL_TASK
+					'type' => MENU_LOCAL_TASK 
 			);
-
+			
 			$items ['season/' . $champ->getId () . '/addlateteam'] = array (
 					'page callback' => 'addLateTeam',
 					'page arguments' => array (
-							1,3
+							1,
+							3 
 					),
 					'access callback' => 'user_access',
 					'access arguments' => array (
-							'fordere admin teams'
-					)
+							'fordere admin teams' 
+					) 
 			);
-
-
 		}
-
+		
 		if ($champ instanceof Cup) {
 			$items ['season/' . $champ->getId () . '/bracket/%d'] = array (
 					'title' => 'Bracket',
 					'page callback' => 'fordere_cup_bracket',
 					'page arguments' => array (
 							1,
-							3
+							3 
 					),
 					'access callback' => 'user_access',
 					'access arguments' => array (
-							'fordere season details'
+							'fordere season details' 
 					),
-					'type' => MENU_LOCAL_TASK
+					'type' => MENU_LOCAL_TASK 
 			);
-			
 		}
-
+		
 		$items ['season/' . $champ->getId () . '/usermails'] = array (
 				'title' => 'E-Mail-Verteiler (' . $champ->getName () . ')',
 				'page callback' => 'champMails',
 				'page arguments' => array (
-						1
+						1 
 				),
 				'type' => MENU_CALLBACK,
 				'access callback' => 'user_access',
 				'access arguments' => array (
-						'fordere season details'
-				)
+						'fordere season details' 
+				) 
 		);
-
+		
 		$items ['season/' . $champ->getId () . '/updateroles'] = array (
 				'title' => 'Userrollen',
 				'page callback' => 'updateroles',
 				'page arguments' => array (
 						1,
 						3,
-						4
+						4 
 				),
 				'type' => MENU_CALLBACK,
 				'access callback' => 'user_access',
 				'access arguments' => array (
-						'fordere admin teams'
-				)
+						'fordere admin teams' 
+				) 
 		);
-
 	}
-
+	
 	$items ['season/matches'] = array (
 			'title' => 'Abgemachte Spiele',
 			'page callback' => 'getmatches',
 			'type' => MENU_CALLBACK,
 			'access callback' => 'user_access',
 			'access arguments' => array (
-					'fordere season details'
-			)
+					'fordere season details' 
+			) 
 	);
 	
 	$items ['season/orderShirt'] = array (
 			'title' => 'T-Shirt bestellen',
 			'page callback' => 'drupal_get_form',
 			'access arguments' => array (
-					'fordere order shirt'
+					'fordere order shirt' 
 			),
 			'page arguments' => array (
-					'orderShirtsForm'
-			)
+					'orderShirtsForm' 
+			) 
 	);
-
+	
 	$items ['seasonadmin/teams'] = array (
 			'title' => 'Teams',
 			'page callback' => 'drupal_get_form',
 			'access arguments' => array (
-					'fordere admin teams'
+					'fordere admin teams' 
 			),
 			'page arguments' => array (
 					'getTeamAdminForm',
-					2
-			)
+					2 
+			) 
 	);
-
+	
 	$items ['seasonadmin/matches'] = array (
 			'title' => 'Matches',
 			'page callback' => 'drupal_get_form',
 			'access arguments' => array (
-					'fordere admin matches'
+					'fordere admin matches' 
 			),
 			'page arguments' => array (
 					'getMatchAdminForm',
-					2
-			)
+					2 
+			) 
 	);
-
+	
 	$items ['seasonadmin/seasondashboard'] = array (
 			'title' => 'Season-Administration-Dashboard',
 			'page callback' => 'seasonAdminDashoboard',
 			'access arguments' => array (
-					'fordere admin season'
-			)
+					'fordere admin season' 
+			) 
 	);
-
+	
 	$items ['seasonadmin/season/%'] = array (
 			'title' => 'Season',
 			'page callback' => 'drupal_get_form',
 			'access arguments' => array (
-					'fordere admin season'
+					'fordere admin season' 
 			),
 			'page arguments' => array (
 					'getSeasonAdmin',
-					2
-			)
+					2 
+			) 
 	);
-
+	
 	$items ['fordereadmin'] = array (
 			'title' => 'Administration',
 			'page callback' => 'admindashboard',
 			'access arguments' => array (
-					'fordere admin'
-			)
+					'fordere admin' 
+			) 
 	);
-
+	
 	return $items;
 }
-
-function addLateTeam($champId, $teamId)
-{
-	$champ = Championschip::CreateChampionschip($champId);
-	$champ -> createGamesLateTeam($teamId);
+function addLateTeam($champId, $teamId) {
+	$champ = Championschip::CreateChampionschip ( $champId );
+	$champ->createGamesLateTeam ( $teamId );
 }
-
 function fordere_mail($key, &$message, $params) {
 	switch ($key) {
 		case 'confirmation' :
@@ -447,15 +439,13 @@ function fordere_mail($key, &$message, $params) {
 			$message ['subject'] = 'Neue Begegnung auf fordere.ch eingetragen';
 			$message ['body'] = getGameReservationMail ( $params );
 			break;
-		case 'orderconfirmation':
+		case 'orderconfirmation' :
 			$message ['subject'] = 'T-Shirt Bestellung';
 			$message ['body'] = getOrderConfirmationMail ( $params );
 			break;
 	}
 }
-
-function getOrderConfirmationMail($params)
-{
+function getOrderConfirmationMail($params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
 		$args ['@' . $key] = $value;
@@ -475,13 +465,12 @@ function getOrderConfirmationMail($params)
 			";
 	return t ( $message, $args );
 }
-
 function getGameReservationMail($params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
 		$args ['@' . $key] = $value;
 	}
-
+	
 	$message = "Hallo zusammen<br />
 
 			Soeben wurde folgende Begegnung bei <a href='http://fordere.ch'>fordere.ch</a> eingetragen: <br />
@@ -494,25 +483,22 @@ function getGameReservationMail($params) {
 			Wir bitten euch rechtzeitig mit der Partie zu beginnen um anschliessende Begegnungen nicht zu behindern.";
 	return t ( $message, $args );
 }
-
 function formatAdditonalFields($fields) {
 	if (count ( $fields ) == 0) {
 		return "";
 	}
-
+	
 	$output = '';
 	foreach ( $fields as $key => $value ) {
 		$output .= $key . ": " . $value . "<br/>";
 	}
-
+	
 	return $output;
 }
-
 function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
-
 	$args = array (
-
-			'@player1name' => $player1->name
+			
+			'@player1name' => $player1->name 
 	);
 	$args ['@player1email'] = $player1->getContactEmail ();
 	$args ['@player1phone'] = $player1->getPhone ();
@@ -524,7 +510,7 @@ function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
 	$args ['!additionalteamfields'] = formatAdditonalFields ( $team->getAdditonalFields () );
 	$args ['@username'] = $player1->getDrupalUserName ();
 	$args ['@championschip'] = $championschip;
-
+	
 	return t ( "<h1>Anmeldebest&auml;tigung @championschip</h1>
 			Hallo @teamname, herzlich willkommen in der Z&uuml;rcher bar-foos-league!
 			<br />
@@ -578,34 +564,30 @@ function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
 
 			Wir w&uuml;nschen Euch f&uuml;r die kommende Saison viel Spass und freuen uns, Euch dabeizuhaben!<br />
 			Euer fordere.ch-Team", $args );
-
 }
 
 // function phptemplate_($form) {
-// 	$variables = array (
+// $variables = array (
 
-// 			'user' => $user,
-// 			'form' => $form
-// 	);
-// 	return _phptemplate_callback ( 'get_register_form', $variables );
+// 'user' => $user,
+// 'form' => $form
+// );
+// return _phptemplate_callback ( 'get_register_form', $variables );
 // }
-
 function getRegisterForm($form, &$form_state, $championschipId) {
-
 	$champs = Season::getCurrentSeason ()->championschips;
 	foreach ( $champs as $champ ) {
-		if ($champ->getId() == $championschipId) {
+		if ($champ->getId () == $championschipId) {
 			$form ['#theme'] = 'get_register_form';
 			$cs = Championschip::CreateChampionschip ( $championschipId );
 			return $cs->getRegisterForm ();
 		}
 	}
-
+	
 	return array (
-			'#markup' => 'Championschip is not in current season!'
+			'#markup' => 'Championschip is not in current season!' 
 	);
 }
-
 function getRegisterForm_validate($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
@@ -615,7 +597,6 @@ function getRegisterForm_validate($form, &$form_state) {
 		form_set_error ( '', $ex->getMessage () );
 	}
 }
-
 function getRegisterForm_submit($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
@@ -626,91 +607,87 @@ function getRegisterForm_submit($form, &$form_state) {
 		drupal_set_message ( "Anmeldeformular nicht korrekt ausgefuellt", 'error' );
 	}
 }
-
 function isUserProfileComplete() {
 	global $user;
 	$currUser = user_load ( $user->uid );
 	return (strlen ( $currUser->field_firstname [LANGUAGE_NONE] [0] ['value'] ) > 0 && strlen ( $currUser->field_lastname [LANGUAGE_NONE] [0] ['value'] ) > 0);
 }
-
 function getUserProfileEditLink() {
 	global $user;
 	return url ( 'user/' . $user->uid . '/edit' );
 }
-
 function seasonDashboard() {
 	$season = Season::getCurrentSeason ();
 	$msg = '';
 	switch ($season->phase) {
 		case 0 :
 			$msg = 'Saison ist in Vorbereitung';
-
+			
 			break;
 		case 1 :
 			if (! user_access ( 'fordere show dashboard' )) {
 				return array (
-						'#markup' => '<h3>Zugriff ohne Account nicht m&ouml;glich</h3><p>Um diese Seite anzeigen zu können benötigst du einen Account. Über diesen erhälst du die Möglichkeit in der Bar-foos-League mitzuspielen, im Forum Beiträge zu verfassen und vieles mehr... </p><p>Falls du bereits einen Account hast, melde dich unter folgendem Link an:<br /><a href="/drupal/user/login?destination=season/dashboard">Mit vorhandenem Account anmelden</a></p><p>Falls du noch keinen Account hast kannst du unter folgendem Link einen erstellen:<br /><a href="/drupal/user/register">Neuer Account erstellen</a></p><p><i>Hinweis: Mit diesem Account meldest du dich nur an der Seite fordere.ch an. Du nimmst nicht automatisch an der Liga oder einen anderen Wettbewerb teil. Jeder der jedoch mitspielen will benötigt einen solchen Account.</i></p>'
+						'#markup' => '<h3>Zugriff ohne Account nicht m&ouml;glich</h3><p>Um diese Seite anzeigen zu können benötigst du einen Account. Über diesen erhälst du die Möglichkeit in der Bar-foos-League mitzuspielen, im Forum Beiträge zu verfassen und vieles mehr... </p><p>Falls du bereits einen Account hast, melde dich unter folgendem Link an:<br /><a href="/drupal/user/login?destination=season/dashboard">Mit vorhandenem Account anmelden</a></p><p>Falls du noch keinen Account hast kannst du unter folgendem Link einen erstellen:<br /><a href="/drupal/user/register">Neuer Account erstellen</a></p><p><i>Hinweis: Mit diesem Account meldest du dich nur an der Seite fordere.ch an. Du nimmst nicht automatisch an der Liga oder einen anderen Wettbewerb teil. Jeder der jedoch mitspielen will benötigt einen solchen Account.</i></p>' 
 				);
 			}
-
+			
 			if (! isUserProfileComplete ()) {
 				return array (
-						'#markup' => '<h2>Anmeldung nicht m&ouml;glich</h2>Dein Profil wurde noch nicht vollst&auml;ndig ausgef&uuml;lt. <br/>Du musst mindestens deinen Vor- und Nachnamen eintragen. Der folgende Link bringt dich in dein Profil: <br/><a href="' . getUserProfileEditLink () . '">Dein Profil</a>'
+						'#markup' => '<h2>Anmeldung nicht m&ouml;glich</h2>Dein Profil wurde noch nicht vollst&auml;ndig ausgef&uuml;lt. <br/>Du musst mindestens deinen Vor- und Nachnamen eintragen. Der folgende Link bringt dich in dein Profil: <br/><a href="' . getUserProfileEditLink () . '">Dein Profil</a>' 
 				);
 			}
-
+			
 			return $season->getRegisterInformation ();
-		case 2:
+		case 2 :
 			return array (
-			'#markup' => '<h2>Saison steht kurz bevor...</h2>Die letzten Vorbereitungen laufen, du kannst bereits die Einteilung der angemeldeten Teams einsehen. Sobald die Liga beginnt wirst du auf dieser Seite deine Spiele verwalten k&ouml;nnen.'
-					);
-					break;
+					'#markup' => '<h2>Saison steht kurz bevor...</h2>Die letzten Vorbereitungen laufen, du kannst bereits die Einteilung der angemeldeten Teams einsehen. Sobald die Liga beginnt wirst du auf dieser Seite deine Spiele verwalten k&ouml;nnen.' 
+			);
+			break;
 		case 3 :
 			$out = '';
-
+			
 			if (! user_access ( 'fordere show dashboard' )) {
 				return Season::getCurrentSeason ()->getUpcommingGames ();
 			}
-
+			
 			foreach ( $season->getRunningSeasonDashboard () as $id => $champ ) {
 				$champObi = Championschip::CreateChampionschip ( $id );
 				$out .= "<h2>Deine Spiele in \"" . $champObi->getName () . "\"</h2>";
 				$out .= drupal_render ( $champ );
 				$out .= "<a href='mailto:" . $champObi->getOpenGameMails () . "'>Mail an alle noch offenen Gegner</a>";
 			}
-
+			
 			return $out;
 		case 4 :
-
+			
 			$out = '<h2>Saison abgeschlossen</h2>Die Saison ist vorbei und die Vorbereitungen auf den Finaltag laufen. Wir freuen uns euch alle am 2. Juni in der Roten Fabrik begr&uuml;ssen zu d&uuml;rfen.';
 			return $out;
 		case 5 :
 			break;
 	}
-
+	
 	return array (
-
-			'#markup' => '<p>' . t ( $msg ) . '</p>'
+			
+			'#markup' => '<p>' . t ( $msg ) . '</p>' 
 	);
 }
-
 function theme_themeregisterinfo($vars) {
 	$output = '<h2>' . $vars ['element'] ['#title'] . '</h2>';
-
+	
 	if (trim ( $vars ['element'] ['#description'] ) != '') {
-		$output .= $vars ['element'] ['#description'] ;
+		$output .= $vars ['element'] ['#description'];
 	}
 	
 	$output .= "<div class='row'>";
 	foreach ( $vars ['element'] ['child'] as $champ ) {
-$output .= "<div class='four columns'><ul class='pricing-table'>";
-
+		$output .= "<div class='four columns'><ul class='pricing-table'>";
+		
 		$output .= '<li class="title">' . $champ ['title'] . '</li>';
-
+		
 		if ($champ ['description'] != '') {
-			$output .= '<li class="description">'.$champ ['description'] . '</li>';
+			$output .= '<li class="description">' . $champ ['description'] . '</li>';
 		}
-
+		
 		if ($champ ['canregister'] && ! $champ ['nodirectregister']) {
 			$output .= '<li class="cta-button"><a class="button" href="' . $champ ['link'] . '"/>Anmelden</a></li>';
 		} else if (! $champ ['canregister']) {
@@ -718,225 +695,211 @@ $output .= "<div class='four columns'><ul class='pricing-table'>";
 			$output .= 'Team: ' . $champ ['team'] . '<br />';
 			$output .= 'Mitspieler: ' . $champ ['player2'] . '<br/>';
 			$output .= 'Heimlokal: ' . $champ ['homelocation'] . '<br/></li>';
-
+			
 			if (isset ( $champ ['league_wish'] )) {
 				$output .= '<li class="description">Wunschliga: ' . $champ ['league_wish'] . '</li>';
 			}
 		}
-$output .= "</ul></div>";
-
+		$output .= "</ul></div>";
 	}
 	
 	$output .= "</div>";
-
-
+	
 	return $output;
 }
-
-function orderShirtsForm($form, $form_state)
-{
-		$form ['title'] = array (
-				'#type' => 'item', 
-				'#title' => t ( "T-Shirt bestellen" ), 
-				'#description' => "Hier hast du die Möglichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-"
-		);
-		$form ['quantity'] = array (
-				'#type' => 'textfield', 
-				'#title' => t ( 'Anzahl' ), 
-				'#default_value' => "1",
-				'#required' => true 
-		);
-		$form ['size'] = array (
-				'#type' => 'select', 
-				'#title' => t ( 'Grösse' ), 
-				'#options' => array("XS", "S", "M", "L", "XL", "XXL") 
-		);
-		$form ['gender'] = array (
-				'#type' => 'select', 
-				'#title' => t ( 'Schnitt' ), 
-				'#options' => array("Mann", "Frau") 
-		);
-		
-		$form ['submit'] = array (
-				'#type' => 'submit', 
-				'#value' => 'Bestellung absenden' 
-		);
-		return $form;
+function orderShirtsForm($form, $form_state) {
+	$form ['title'] = array (
+			'#type' => 'item',
+			'#title' => t ( "T-Shirt bestellen" ),
+			'#description' => "Hier hast du die M�glichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-" 
+	);
+	$form ['quantity'] = array (
+			'#type' => 'textfield',
+			'#title' => t ( 'Anzahl' ),
+			'#default_value' => "1",
+			'#required' => true 
+	);
+	$form ['size'] = array (
+			'#type' => 'select',
+			'#title' => t ( 'Gr�sse' ),
+			'#options' => array (
+					"XS",
+					"S",
+					"M",
+					"L",
+					"XL",
+					"XXL" 
+			) 
+	);
+	$form ['gender'] = array (
+			'#type' => 'select',
+			'#title' => t ( 'Schnitt' ),
+			'#options' => array (
+					"Mann",
+					"Frau" 
+			) 
+	);
+	
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => 'Bestellung absenden' 
+	);
+	return $form;
 }
-
-function orderShirtsForm_validate($form, $form_state)
-{
-	$quantity = $form['quantity']['#value'];
-	if($quantity <=0)
-	{
-		form_error($form, t('Mindestens ein Shirt muss schon angegeben werden damit eine Bestellung funktioniert...'));
+function orderShirtsForm_validate($form, $form_state) {
+	$quantity = $form ['quantity'] ['#value'];
+	if ($quantity <= 0) {
+		form_error ( $form, t ( 'Mindestens ein Shirt muss schon angegeben werden damit eine Bestellung funktioniert...' ) );
 	}
 }
-
-function orderShirtsForm_submit($form, $form_state)
-{
+function orderShirtsForm_submit($form, $form_state) {
 	$params = array (
-			'quantity' => $form['quantity']['#value'],
-			'size' => $form['size']['#value'],
-			'gender' => $form['gender']['#value'],
-			'username' => Player::getCurrentUserPlayer()->getDrupalUserName(),
+			'quantity' => $form ['quantity'] ['#value'],
+			'size' => $form ['size'] ['#value'],
+			'gender' => $form ['gender'] ['#value'],
+			'username' => Player::getCurrentUserPlayer ()->getDrupalUserName () 
 	);
 	
 	$mails = array (
-			'info@fordere.ch', Player::getCurrentUserPlayer()->getContactEmail()
+			'info@fordere.ch',
+			Player::getCurrentUserPlayer ()->getContactEmail () 
 	);
 	
 	drupal_mail ( 'fordere', 'orderconfirmation', $mails, language_default (), $params );
 }
-
 function getTeamAdminForm($form, $form_state, $championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "Team Admin " . $champ->getName () );
 	return $champ->getTeamAdminForm ( $form, $form_state );
 }
-
 function getMatchAdminForm($form, $form_state, $championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "Match Admin " . $champ->getName () );
 	$data = $champ->getMatchAdminForm ( $form, $form_state );
 	return $data;
 }
-
 function getMatchAdminForm_submit($form, &$form_state) {
 	$championschipId = $form_state ['build_info'] ['args'] [0];
 	$cs = Championschip::CreateChampionschip ( $championschipId );
 	$cs->createGames ( $form, $form_state );
 }
-
 function league_callback($form, $form_state) {
 	return $form;
 }
-
 function league_callback_submit($form, $form_state) {
 	$form_state ['rebuild'] = FALSE;
 	die ();
 }
-
 function league_callback_enter($form, $form_state) {
-	//Championschip::registerGame ( $form_state );
+	// Championschip::registerGame ( $form_state );
 	return $form;
 }
-
 function league_callback_result($form, $form_state) {
 	$champid = $form_state ['values'] ['children'] ['championschip'];
-
+	
 	$champ = Championschip::CreateChampionschip ( $champid );
 	$champ->enterResult ( $form_state );
-
+	
 	return $form;
 }
-
 function confirmleague_callback($form, $form_state) {
 	$champid = $form_state ['values'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->teamAdminAjaxCallback ( $form, $form_state );
 }
-
 function theme_adminteam($variables) {
 	$champid = $variables ['form'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->themeTeamAdmin ( $variables );
 }
-
 function theme_adminmatch($variables) {
 	$champid = $variables ['form'] ['championschip'] ['#value'];
 	$champ = Championschip::CreateChampionschip ( $champid );
 	return $champ->themeTeamAdmin ( $variables );
 }
-
 function fordere_theme($existing, $type, $theme, $path) {
 	$items = array (
 			'themeregisterinfo' => array (
-					'render element' => 'element'
-			)
+					'render element' => 'element' 
+			) 
 	);
 	$items ['adminteam'] = array (
-			'render element' => 'form'
+			'render element' => 'form' 
 	);
-
+	
 	$items ['adminmatch'] = array (
-			'render element' => 'form'
+			'render element' => 'form' 
 	);
-
+	
 	$items ['getRegisterForm'] = array (
 			'template' => 'templates/get_register_form',
-			'render element' => 'form'
+			'render element' => 'form' 
 	);
-
+	
 	$items ['dashboard_running'] = array (
-			'render element' => 'form'
+			'render element' => 'form' 
 	);
-
+	
 	$items ['seasondashboardtheme'] = array (
 			'variables' => array (
 					'form' => null,
-					'season' => null
+					'season' => null 
 			),
-			'template' => 'templates/dashboard'
+			'template' => 'templates/dashboard' 
 	);
-
+	
 	$items ['teams'] = array (
 			'variables' => array (
 					'teams' => null,
-					'type' => null
+					'type' => null 
 			),
-			'template' => 'templates/teams'
+			'template' => 'templates/teams' 
 	);
-
+	
 	return $items;
 }
-
 function theme_dashboard_running($form) {
 	return drupal_render ( $arr );
 }
-
 function seasonTable($championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "" );
 	return runChampionschipMethod ( $championschipId, 'getCurrentState' );
 }
-
 function seasonTeams($championschipId) {
 	$champ = Championschip::CreateChampionschip ( $championschipId );
 	drupal_set_title ( "" );
 	$type = $champ->getTeamThemeType ();
 	return theme ( 'teams', array (
 			'teams' => runChampionschipMethod ( $championschipId, 'getTeams' ),
-			'type' => $type
+			'type' => $type 
 	) );
 }
-
 function seasonMatches($champId) {
 	GameFactory::loadGames ( $champId );
 	$league = Championschip::CreateChampionschip ( $champId );
 	$leagues = $league->getLeagues ();
-
+	
 	$out = '';
 	foreach ( $leagues as $leagueId => $leagueName ) {
 		$out .= '<h3>' . $leagueName . '</h3>';
 		$groups = $league->getLeagueGroups ( $leagueId );
-		sort($groups);
+		sort ( $groups );
 		foreach ( $groups as $groupId ) {
-			if(count($groups) > 1)
-			{
+			if (count ( $groups ) > 1) {
 				$out .= '<h3>' . $groupId . '. Gruppe</h3>';
 			}
-				
+			
 			$out .= '<table class="fordere_matches_table" >';
-
+			
 			$teams = $league->getTeamsForGroup ( $leagueId, $groupId );
-
+			
 			$out .= '<tr><td>&nbsp;</td>';
 			foreach ( $teams as $team ) {
-				$out .= '<td class="fordere_matches_teamheader"><div class="rotate_outer"><div class="rotate_text">' . $team->getShortNamePointed (13) . '</div></div></td>';
+				$out .= '<td class="fordere_matches_teamheader"><div class="rotate_outer"><div class="rotate_text">' . $team->getShortNamePointed ( 13 ) . '</div></div></td>';
 			}
 			$out .= '</tr>';
-
+			
 			foreach ( $teams as $team1 ) {
 				$out .= '<tr><td class="fordere_matches_teamname">' . $team1->getShortNamePointed ( 20 ) . '</td>';
 				foreach ( $teams as $team2 ) {
@@ -944,7 +907,7 @@ function seasonMatches($champId) {
 						$out .= '<td class="fordere_matches_nogame">/</td>';
 					} else {
 						$game = GameFactory::getGamebyTeam ( $team1->id, $team2->id, $champId );
-
+						
 						switch ($game->state) {
 							case 1 :
 								$out .= '<td class="fordere_matches_created">';
@@ -956,79 +919,62 @@ function seasonMatches($champId) {
 								$out .= '<td class="fordere_matches_finished">';
 								break;
 						}
-
-						if($game -> hometeamid == $team1 -> id)
-						{
-							$out .=  $game -> getResult() .  '</td>';
+						
+						if ($game->hometeamid == $team1->id) {
+							$out .= $game->getResult () . '</td>';
+						} else {
+							$out .= $game->getInvertedResult () . '</td>';
 						}
-						else
-						{
-							$out .=  $game -> getInvertedResult() .  '</td>';
-						}
-
 					}
 				}
 				$out .= '</tr>';
 			}
 			$out .= '</table>';
 		}
-
 	}
-
+	
 	return $out;
 }
-
 function champMails($champId) {
 	$champ = Championschip::CreateChampionschip ( $champId );
-
+	
 	return "<a href='mailto:" . $champ->getUserMails () . "'>Mail an alle aus: " . $champ->getName ();
 }
-
 function updateroles($champId, $roleId, $round = null) {
-
-	if($round == null)
-	{
-		addPlayerPermissions($roleId);
+	if ($round == null) {
+		addPlayerPermissions ( $roleId );
 		return;
 	}
 	
 	$champ = Championschip::CreateChampionschip ( $champId );
 	$champ->updateRole ( $roleId, $round );
-
+	
 	return "DONE";
 }
-
 function seasonAdminDashoboard() {
-
 	return "<table><tr><th>Name</th><th>Status</th></tr></table>";
-
 }
-
 function admindashboard() {
 	return "JO";
 }
-
 function seasonRules($championschipId) {
 	return runChampionschipMethod ( $championschipId, 'getRules' );
 }
-
 function removereservation($form, $form_state) {
 }
-
 function runChampionschipMethod($championschipId, $method) {
 	if (! isset ( $championschipId ) || ! is_numeric ( $championschipId )) {
-		//TODO: Error Handling
+		// TODO: Error Handling
 		die ( 'Wrong ID' );
 		return;
 	}
-
+	
 	$championship = Championschip::CreateChampionschip ( $championschipId );
 	return $championship->$method ();
 }
-
 function fordere_preprocess_node(&$variables) {
 	$nodeType = $variables ['type'];
-
+	
 	switch ($nodeType) {
 		case 'fordere_team' :
 			$team = Team::getTeamById ( $variables ['nid'] );
@@ -1040,7 +986,7 @@ function fordere_preprocess_node(&$variables) {
 				$player2Image = $team->getPlayer2 ()->getUser ()->picture->filename;
 				$variables ['player2image'] = $picture = "../" . variable_get ( 'file_public_path', conf_path () . '/files' ) . "/styles/thumbnail/public/pictures/$player2Image";
 			}
-
+			
 			$variables ['team'] = $team;
 			$variables ['result'] = getResultData ( $team );
 			break;
@@ -1055,12 +1001,10 @@ function fordere_preprocess_node(&$variables) {
 			} else {
 				$variables ['result'] = 'VS.';
 			}
-
+			
 			break;
 	}
-
 }
-
 function getResultData($team) {
 	$out = array ();
 	foreach ( $team->getChampionschips () as $champ ) {
@@ -1070,49 +1014,42 @@ function getResultData($team) {
 		$games = $champ->getGamesForTeam ( $team->id );
 		foreach ( $games as $game ) {
 			if ($game->state < 3) {
-				//continue;
+				// continue;
 			}
 			$arr ['games'] [] = $game;
 		}
-
+		
 		usort ( $arr ['games'], 'compareGames' );
-
+		
 		$out [] = $arr;
 	}
 	return $out;
 }
-
 function compareGames($game1, $game2) {
-
 	if ($game1->playDate < $game2->playDate) {
 		return - 1;
 	}
-
+	
 	return 1;
-
 }
-
 function getmatches() {
 	$season = Season::getCurrentSeason ();
 	return $season->getUpcommingGames ();
 }
-
 function removePlayerFromRole($roleId) {
 	$result = db_query ( 'SELECT drupal_users.uid FROM drupal_users_roles LEFT JOIN drupal_users  ON drupal_users_roles.uid = drupal_users.uid WHERE drupal_users_roles.rid=:s', array (
-			':s' => $roleId
+			':s' => $roleId 
 	) );
 	$data = $result->fetchAll ();
 	$uids = array ();
 	foreach ( $data as $user ) {
 		$uids [] = $user->uid;
 	}
-
+	
 	user_multiple_role_edit ( $uids, 'remove_role', $roleId );
 }
-
 function addPlayerPermissions($roleId) {
-
-	removePlayerFromRole($roleId);
+	removePlayerFromRole ( $roleId );
 	
 	$query = db_select ( 'fordere_player', 'p' );
 	$query->condition ( 'p.seasonId', Season::getCurrentSeasonId () );
@@ -1120,33 +1057,27 @@ function addPlayerPermissions($roleId) {
 	$query->addField ( 'p', 'Id' );
 	$result = $query->execute ()->fetchAll ();
 	
-	
 	foreach ( $result as $player ) {
 		
-		$query= db_select('fordere_playerinteam', 'p');
-		$query -> condition('p.playerId', $player -> Id);
-		$query -> addField('p', 'teamId');
-		$teamCount = $query -> execute() -> fetchAll();
+		$query = db_select ( 'fordere_playerinteam', 'p' );
+		$query->condition ( 'p.playerId', $player->Id );
+		$query->addField ( 'p', 'teamId' );
+		$teamCount = $query->execute ()->fetchAll ();
 		
-		if(count($teamCount) > 0)
-		{
-			custom_add_role_to_user ( $player->drupalUserId, 'Spieler' );			
+		if (count ( $teamCount ) > 0) {
+			custom_add_role_to_user ( $player->drupalUserId, 'Spieler' );
 		}
-		
 	}
-
+	
 	return "DONE";
-
 }
-
 function fordere_cup_bracket($champId, $beginRound) {
-
 	if (! is_numeric ( $beginRound ) || $beginRound < 0) {
 		return "No bracket available for this round";
 	}
-
+	
 	$endRound = $beginRound + 3;
-
+	
 	$out = '';
 	$out .= $beginRound;
 	return $out;
@@ -1155,18 +1086,39 @@ function fordere_cup_bracket($champId, $beginRound) {
 /**
  * Add a role to a user.
  *
- * @param $user
- * User object or user ID.
- * @param $role_name
- * String value of role to be added.
- *
+ * @param $user User
+ *        	object or user ID.
+ * @param $role_name String
+ *        	value of role to be added.
+ *        	
  * @see http_://drupal.org/node/28379#comment-4277052
  * @see http_://api.drupal.org/api/drupal/modules--user--user.module/function/user_save
  */
 function custom_add_role_to_user($uid, $role_name) {
 	if ($role = user_role_load_by_name ( $role_name )) {
 		user_multiple_role_edit ( array (
-		$uid
+				$uid 
 		), 'add_role', $role->rid );
 	}
+}
+function fordere_admin() {
+	$form = array ();
+	
+	$form ['fordere_ordershirtmail'] = array (
+			'#type' => 'textarea',
+			'#title' => t ( 'T-Shirt-Order confirmation mail' ),
+			'#default_value' => variable_get ( 'fordere_ordershirtmail', "" ),
+			'#description' => t ( "Mail sent to the user when he orders a shirt, available parameters: @username, @quantity, @size, @gender" ),
+			'#required' => TRUE 
+	);
+	
+	$form ['fordere_mail_confirmation_registration'] = array (
+			'#type' => 'textarea',
+			'#title' => t ( 'Championship registration confirmation mail' ),
+			'#default_value' => variable_get ( 'fordere_ordershirtmail', "" ),
+			'#description' => t ( "Mail sent to the user when he has successfully registered for a championship, available parameters: @player1name, @player1email, @player1phone, @player2name, @player2email, @player2phone, @teamname, @homelocation, !additionalteamfields, @username, @championschip" ),
+			'#required' => TRUE 
+	);
+	
+	return system_settings_form ( $form );
 }
