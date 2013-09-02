@@ -165,6 +165,7 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 	$teamsArr = array ();
 	// TODO: this could be moved to Season class
 	// Get all Teams playing this season
+	//TODO: this method is just copy paste from somewhere else in fordere... can maybe be written much easier
 	$teams = array ();
 	foreach ( $currentSeason->championschips as $champ ) {
 		$newteams = $champ->getTeams ();
