@@ -19,7 +19,7 @@ function forderepermissionadmin_menu() {
 
 function forderepermissionadmin_permissions() {
 	return array (
-			'fordere permissions' => array (
+			'forderepermissionadmin permissions' => array (
 					'title' => 'Fordere Permission Administration',
 					'description' => 'Administrieren der Permissions fuer fordere' 
 			) 

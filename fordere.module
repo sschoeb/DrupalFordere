@@ -77,12 +77,6 @@ function fordere_permission() {
 	);
 }
 
-// function fordere_entity_info_alter($entity_info) {
-// $entity_info ['node'] ['view modes'] ['full team'] = array (
-// 'label' => t ( 'Team anzeige' ),
-// 'custom settings' => TRUE
-// );
-// }
 function fordere_node_info() {
 	return array (
 			
@@ -116,19 +110,6 @@ function fordere_node_info() {
 	);
 }
 
-// function fordere_form($node, $form_state) {
-// $type = node_type_get_type ( $node );
-// $form ['title'] = array (
-
-// '#type' => 'textfield',
-// '#title' => check_plain ( $type->title_label ),
-// '#default_value' => ! empty ( $node->title ) ? $node->title : '',
-// '#required' => TRUE,
-// '#weight' => - 5
-// );
-
-// return $form;
-// }
 function fordere_forms($form_id, $args) {
 	$forms = array ();
 	if (0 !== strpos ( $form_id, 'fordere_dashboard' )) {
@@ -199,17 +180,6 @@ function fordere_form_builder_validate($form, $form_state) {
 	}
 }
 
-// function fordere_help($path, $arg) {
-
-// // menu_rebuild ();
-
-// switch ($path) {
-// case "admin/help#fordere" :
-// return '<p>' . t ( "Displays links to nodes created on this date" ) . '</p>';
-// break;
-// }
-
-// }
 function fordere_menu() {
 	$items = array ();
 	
@@ -441,57 +411,26 @@ function fordere_mail($key, &$message, $params) {
 	switch ($key) {
 		case 'confirmation' :
 			$message ['subject'] = 'Anmeldebestaetigung ' . $params ['championschip'];
-			$message ['body'] = getAnmeldeBestaetigung ( $params ['player1'], $params ['player2'], $params ['team'], $params ['championschip'] );
+			$message ['body'] = getMailBody ( "fordere_mail_confirmation_registration", getRegistrationConfirmationParams ( $params ['player1'], $params ['player2'], $params ['team'], $params ['championschip'] ) );
 			break;
 		case 'gamereservation' :
 			$message ['subject'] = 'Neue Begegnung auf fordere.ch eingetragen';
-			$message ['body'] = getGameReservationMail ( $params );
+			$message ['body'] = getMailBody ( 'fordere_mail_confirmation_game', $params );
 			break;
 		case 'orderconfirmation' :
 			$message ['subject'] = 'T-Shirt Bestellung';
-			$message ['body'] = getOrderConfirmationMail ( $params );
+			$message ['body'] = getMailBody ( 'fordere_ordershirtmail', $params );
 			break;
 	}
 }
 
-function getOrderConfirmationMail($params) {
+function getMailBody($key, $params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
 		$args ['@' . $key] = $value;
 	}
 	
-	$message = "Hallo @username<br />
-	
-			Gratuliere, deine Bestellung für die begehrten fordere.ch-Shirts ist bei uns eingetroffen. Du hast folgende Angaben gemacht: <br />
-	
-			Anzahl: @quantity<br />
-			Grösse: @size<br />
-			Typ: @gender<br />
-	
-			Bitte überweise den Betrag (10.- pro Shirt) direkt mit deinem Ligabeitrag. Falls du Fragen haben solltest oder deine Bestellung noch abändern möchtest schreib uns eine Mail an info@fordere.ch.
-			<br />
-			Grüsse vom fordere.ch-Team
-			";
-	return t ( $message, $args );
-}
-
-function getGameReservationMail($params) {
-	$args = array ();
-	foreach ( $params as $key => $value ) {
-		$args ['@' . $key] = $value;
-	}
-	
-	$message = "Hallo zusammen<br />
-
-			Soeben wurde folgende Begegnung bei <a href='http://fordere.ch'>fordere.ch</a> eingetragen: <br />
-
-			Wettbewerb: @championschip<br />
-			Teams: @team1 vs. @team2<br />
-			Lokal: @location<br />
-			Zeipunkt: @date<br />
-
-			Wir bitten euch rechtzeitig mit der Partie zu beginnen um anschliessende Begegnungen nicht zu behindern.";
-	return t ( $message, $args );
+	return t ( variable_get ( $key ), $args );
 }
 
 function formatAdditonalFields($fields) {
@@ -507,11 +446,9 @@ function formatAdditonalFields($fields) {
 	return $output;
 }
 
-function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
-	$args = array (
-			
-			'@player1name' => $player1->name 
-	);
+function getRegistrationConfirmationParams($player1, $player2, $team, $championschip) {
+	$args = array ();
+	$args ['@player1name'] = $player1->name;
 	$args ['@player1email'] = $player1->getContactEmail ();
 	$args ['@player1phone'] = $player1->getPhone ();
 	$args ['@player2name'] = $player2->name;
@@ -519,73 +456,14 @@ function getAnmeldeBestaetigung($player1, $player2, $team, $championschip) {
 	$args ['@player2phone'] = $player2->getPhone ();
 	$args ['@teamname'] = $team->name;
 	$args ['@homelocation'] = Team::getHomeLocation ( $team->id );
-	$args ['!additionalteamfields'] = formatAdditonalFields ( $team->getAdditonalFields () );
 	$args ['@username'] = $player1->getDrupalUserName ();
 	$args ['@championschip'] = $championschip;
 	
-	return t ( "<h1>Anmeldebest&auml;tigung @championschip</h1>
-			Hallo @teamname, herzlich willkommen in der Z&uuml;rcher bar-foos-league!
-			<br />
-			Kontrolliert bitte Eure Angaben und meldet Euch gegebenenfalls bei info@fordere.ch.<br/>
-			Ihr habt Euch f&uuml;r folgenden Wettbewerb angemeldet: @championschip<br />
-			<h2>Teaminfos</h2>
-			Name: @teamname <br/>
-			Heimlokal: @homelocation <br />
-			!additionalteamfields
-
-			<h2>Personalien</h2>
-			Name: @player1name<br />
-			E-Mail: @player1email<br />
-			Telefon: @player1phone
-			<h2>Mitspieler</h2>
-			Name: @player2name<br />
-			E-Mail: @player2email<br />
-			Telefon: @player2phone
-			<h2>Daten Saison 10</h2>
-			Beginn: Sa. 1. Dezember 2012 in der Vollmond Taverne<br />
-			Halbzeit: Sa. 2 M&auml;rz 2013<br />
-			Schluss: Sa. 11. Mai 2013<br />
-			Finaltag: Sa. 01. Juni 2013<br />
-			<h2>Infos</h2>
-			Kontakt: info@fordere.ch<br/>
-			Mitgliederbeitrag einmalig CHF 25.-/Person, unabh&auml;ngig davon an welchen Wettbewerben (nur Liga+Cup oder Liga+Cup plus Ullrich-Cup oder nur Ullrich-Cup) teilgenommen wird.<br /><br />
-			<b>Kontodaten: </b><br />
-			Postkonto: 85-758417-6 <br /><br />
-
-			<u>F&uuml;r Bank&uuml;berweisungen:</u><br />
-			IBAN: CH19 0900 0000 8575 8417 6 <br />
-			Clearing-Nr.: 9000 <br />
-			Bank: Die Schweizerische Post <br /><br />
-			<u>Lautend auf: </u><br />
-			Fordere.ch<br />
-			Kn&uuml;slistrasse 5<br />
-			8004 Z&uuml;rich<br />
-			<br />
-			<b>Neue Teams: </b><br />
-			Neue Teams werden entsprechend ihrer Spielst&auml;rke zugeteilt.
-			Dazu m&uuml;sst ihr vorspielen und zeigen was ihr so drauf habt ;)<br/>
-			Folgende Termine gibt es zum Vorspielen:
-			<ul>
-			<li>Dienstag 30. Oktober 2012 ab 18:30 im TFCZ (Landenbergstrasse 10, 8037 Z&uuml;rich. Bei der Druckerei ADAG im UG)</li>
-			<li>Montag 5. November 2012 ab 18:30 im TFCZ (Landenbergstrasse 10, 8037 Z&uuml;rich. Bei der Druckerei ADAG im UG)</li></ul>
-			<p><a href=\"http://doodle.com/2552idxqd7gncgm2\" target=\"_new\">Tragt Euch bitte im Doodle ein (mit dem Teamnamen) um einen Vorspieltermin auszuw&auml;hlen.</a></p>
-			<p>
-			<b>G&uuml;nstige STF-Lizenz</b><br />
-			Als Mitglieder von Fordere profitiert Ihr von einem Rabatt auf STF-Lizenzen. Diese sind <a href=\"http://stf-tischfussball.ch/index.php/services/lizenzen/lizenz-beantragen\">hier</a> f&uuml;r 30.- statt 50.- erh&auml;ltlich.</p>
-			Weitere Infos findet Ihr auf der Webseite <a href=\"http://fordere.ch\">fordere.ch</a> unter <a href=\"http://fordere.ch/drupal/faq-page\">FAQ's</a>. <br />
-
-			Wir w&uuml;nschen Euch f&uuml;r die kommende Saison viel Spass und freuen uns, Euch dabeizuhaben!<br />
-			Euer fordere.ch-Team", $args );
+	$args ['!additionalteamfields'] = formatAdditonalFields ( $team->getAdditonalFields () );
+	
+	return $args;
 }
 
-// function phptemplate_($form) {
-// $variables = array (
-
-// 'user' => $user,
-// 'form' => $form
-// );
-// return _phptemplate_callback ( 'get_register_form', $variables );
-// }
 function getRegisterForm($form, &$form_state, $championschipId) {
 	$champs = Season::getCurrentSeason ()->championschips;
 	foreach ( $champs as $champ ) {
@@ -638,8 +516,9 @@ function seasonDashboard() {
 	$msg = '';
 	switch ($season->phase) {
 		case 0 :
-			$msg = 'Saison ist in Vorbereitung';
-			
+			return array (
+					'#markup' => variable_get ( 'fordere_mail_confirmation_game' ) 
+			);
 			break;
 		case 1 :
 			if (! user_access ( 'fordere show dashboard' )) {
@@ -659,7 +538,6 @@ function seasonDashboard() {
 			return array (
 					'#markup' => '<h2>Saison steht kurz bevor...</h2>Die letzten Vorbereitungen laufen, du kannst bereits die Einteilung der angemeldeten Teams einsehen. Sobald die Liga beginnt wirst du auf dieser Seite deine Spiele verwalten k&ouml;nnen.' 
 			);
-			break;
 		case 3 :
 			$out = '';
 			
@@ -682,11 +560,6 @@ function seasonDashboard() {
 		case 5 :
 			break;
 	}
-	
-	return array (
-			
-			'#markup' => '<p>' . t ( $msg ) . '</p>' 
-	);
 }
 
 function theme_themeregisterinfo($vars) {
@@ -1166,8 +1039,24 @@ function fordere_admin() {
 	$form ['fordere_mail_confirmation_registration'] = array (
 			'#type' => 'textarea',
 			'#title' => t ( 'Championship registration confirmation mail' ),
-			'#default_value' => variable_get ( 'fordere_ordershirtmail', "" ),
+			'#default_value' => variable_get ( 'fordere_mail_confirmation_registration', "" ),
 			'#description' => t ( "Mail sent to the user when he has successfully registered for a championship, available parameters: @player1name, @player1email, @player1phone, @player2name, @player2email, @player2phone, @teamname, @homelocation, !additionalteamfields, @username, @championschip" ),
+			'#required' => TRUE 
+	);
+	
+	$form ['fordere_mail_confirmation_game'] = array (
+			'#type' => 'textarea',
+			'#title' => t ( 'Game registration confirmation mail' ),
+			'#default_value' => variable_get ( 'fordere_mail_confirmation_game', "" ),
+			'#description' => t ( "Mail sent to both teams when a user reservers a location for a game, available parameters. @championschip, @team1, @team2, @location, @date" ),
+			'#required' => TRUE 
+	);
+	
+	$form ['fordere_dashboard_text_preparation'] = array (
+			'#type' => 'textarea',
+			'#title' => t ( 'Season phase preparation dashboard message' ),
+			'#default_value' => variable_get ( 'fordere_mail_confirmation_game', "" ),
+			'#description' => t ( 'Message shown to the user when the current season is in preparation phase' ),
 			'#required' => TRUE 
 	);
 	
