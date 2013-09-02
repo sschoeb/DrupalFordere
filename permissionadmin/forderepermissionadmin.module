@@ -81,14 +81,16 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 	
 	$seasonUsersRole = $form ['allplayeroptions'] ['#value'];
 	$seasonUsers = forderepermissionadmin_internal_getAllSeasonUser ();
-	forderepermissionadmin_internal_setRoleOnUsers ( $seaeasonUsers, $seasonUsersRole );
+	forderepermissionadmin_internal_setRoleOnUsers ( $seasonUsers, $seasonUsersRole );
 	variable_set ( 'forderepermission_allplayeroptions', $seasonUsersRole );
 	
 	$nonSeasonUsersRole = $form ['allnonplayer'] ['#value'];
-	$nonSeasonUsers = array_diff ( $allUsers, $seasonUsers );
+	$nonSeasonUsers = array_values ( array_diff ( $allUsers, $seasonUsers ) );
+	
 	forderepermissionadmin_internal_setRoleOnUsers ( $nonSeasonUsers, $nonSeasonUsersRole );
 	variable_set ( 'forderepermission_allnonplayer', $nonSeasonUsersRole );
 	
+	return;
 	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
 		
 		$champRole = $form [$champ->getId ()] ['#value'];
@@ -125,8 +127,10 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 
 function forderepermissionadmin_internal_setRoleOnUsers($users, $roleId) {
 	forderpermissionadmin_internal_removeRoleFromAllUser ( $roleId );
-	foreach ( $users as $userId ) {
-		forderpermissionadmin_internal_addRoleToUser ( $userId, $roleId );
+	
+	if (count ( $users ) > 0) {
+		
+		user_multiple_role_edit ( $users, "add_role", $roleId );
 	}
 }
 
@@ -134,33 +138,26 @@ function forderpermissionadmin_internal_getUserRoles() {
 	return user_roles ( true );
 }
 
-function forderpermissionadmin_internal_addRoleToUser($uid, $roleId) {
-	$role = user_role_load ( $roleId );
-	user_multiple_role_edit ( array (
-			$uid 
-	), 'add_role', $role->rid );
-}
-
 function forderpermissionadmin_internal_removeRoleFromAllUser($roleId) {
-	$sql = "SELECT u.uid, u.name FROM {users} u INNER JOIN {users_roles} ur ON u.uid = ur.uid WHERE ur.rid = %d";
+	$select = db_select ( 'users', 'u' );
+	$select->join ( 'users_roles', 'ur', 'u.uid = ur.uid' );
 	
-	$results = db_query ( $sql, array (
-			$roleId 
-	) );
+	$select->addField ( 'u', 'uid' );
 	
-	foreach ( $results as $record ) {
-		echo "Remove " . $roleId . " from " . $record ['u.uid'];
-		
-		// forderpermissionadmin_internal_removeRoleFromSingleUser ( $record ['u.uid'], $roleId );
+	$select->condition ( 'ur.rid', $roleId );
+	
+	$roleIds = $select->execute ()->fetchCol ();
+	
+	foreach ( $roleIds as $record ) {
+		forderpermissionadmin_internal_removeRoleFromSingleUser ( $record, $roleId );
 	}
 }
 
 function forderpermissionadmin_internal_removeRoleFromSingleUser($userId, $roleId) {
-	echo "Assign " . $roleId . " to " . $userId;
-	// $role = user_role_load ( $roleId );
-	// user_multiple_role_edit ( array (
-	// $userId
-	// ), 'remove_role', $role->rid );
+	$role = user_role_load ( $roleId );
+	user_multiple_role_edit ( array (
+			$userId 
+	), 'remove_role', $role->rid );
 }
 
 function forderepermissionadmin_internal_getAllSeasonUser() {
@@ -214,7 +211,9 @@ function forderepermissionadmin_internal_getAllUsers() {
 	) );
 	$result = $query->execute ();
 	while ( $record = $result->fetchAssoc () ) {
-		$uids [] = $record ['uid'];
+		if ($record ['uid'] != 0) {
+			$uids [] = $record ['uid'];
+		}
 	}
 	
 	return $uids;
