@@ -30,33 +30,37 @@ function forderepermissions_internal_getPermissionForm() {
 	$form ['allplayeroptions'] = array (
 			'#type' => "select",
 			'#title' => t ( 'Alle Spieler der aktuellen Saison' ),
-			'#description' => t ( 'Alle Spieler die an irgendeinem Wettbewerb in dieser Saison teilnehmen.' ) 
+			'#description' => t ( 'Alle Spieler die an irgendeinem Wettbewerb in dieser Saison teilnehmen.' ),
+			'#options' => forderpermissionadmin_internal_getUserRoles (),
+			'#default_value' => variable_get ( 'forderepermission_allplayeroptions' ) 
 	);
 	
 	$form ['allnonplayer'] = array (
 			'#type' => "select",
 			'#title' => t ( 'Alle NICHT-Spieler der aktuellen Saison' ),
-			'#description' => t ( 'Alle fordere.ch-User welche auf der Webseite registriert sind jedoch nicht an einem Wettbewerb teilnehmen.' ) 
+			'#description' => t ( 'Alle fordere.ch-User welche auf der Webseite registriert sind jedoch nicht an einem Wettbewerb teilnehmen.' ),
+			'#options' => forderpermissionadmin_internal_getUserRoles (),
+			'#default_value' => variable_get ( 'forderepermission_allnonplayer' ) 
 	);
 	
 	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
-		if ($champ instanceof Cup) {
-			$form [$champ->getId ()] = array (
-					'#type' => "select",
-					'#title' => "Alle Spieler in " . $champ->getName () 
-			);
-		} else if ($champ instanceof League) {
-			
-			$form [$champ->getId ()] = array (
-					'#type' => "select",
-					'#title' => "Alle Spieler in " . $champ->getName () 
-			);
-			
+		
+		$form [$champ->getId ()] = array (
+				'#type' => "select",
+				'#title' => "Alle Spieler in " . $champ->getName (),
+				'#options' => forderpermissionadmin_internal_getUserRoles (),
+				'#default_value' => variable_get ( 'forderepermission_' . $champ->getId () ) 
+		);
+		
+		if ($champ instanceof League) {
 			$leagues = $champ->getLeagues ();
 			foreach ( $leagues as $id => $name ) {
-				$form [$champ->getId () . "_league_" . $id] = array (
+				$leagueId = $champ->getId () . "_league_" . $id;
+				$form [$leagueId] = array (
 						'#type' => "select",
-						'#title' => "Alle Spieler in " . $champ->getName () . " - " . $name . " (ID:" . $id . ")" 
+						'#title' => "Alle Spieler in " . $champ->getName () . " - " . $name . " (ID:" . $id . ")",
+						'#options' => forderpermissionadmin_internal_getUserRoles (),
+						'#default_value' => variable_get ( 'forderepermission_' . $leagueId ) 
 				);
 			}
 		}
@@ -70,4 +74,148 @@ function forderepermissions_internal_getPermissionForm() {
 	);
 	
 	return $form;
+}
+
+function forderepermissions_internal_getPermissionForm_submit($form, $form_state) {
+	$allUsers = forderepermissionadmin_internal_getAllUsers ();
+	
+	$seasonUsersRole = $form ['allplayeroptions'] ['#value'];
+	$seasonUsers = forderepermissionadmin_internal_getAllSeasonUser ();
+	forderepermissionadmin_internal_setRoleOnUsers ( $seaeasonUsers, $seasonUsersRole );
+	variable_set ( 'forderepermission_allplayeroptions', $seasonUsersRole );
+	
+	$nonSeasonUsersRole = $form ['allnonplayer'] ['#value'];
+	$nonSeasonUsers = array_diff ( $allUsers, $seasonUsers );
+	forderepermissionadmin_internal_setRoleOnUsers ( $nonSeasonUsers, $nonSeasonUsersRole );
+	variable_set ( 'forderepermission_allnonplayer', $nonSeasonUsersRole );
+	
+	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
+		
+		$champRole = $form [$champ->getId ()] ['#value'];
+		$teams = $champ->getTeams ();
+		$champUserIds = array ();
+		foreach ( $teams as $team ) {
+			$champUserIds [] = $team->getPlayer1 ()->$drupalUserId;
+			$champUserIds [] = $team->getPlayer2 ()->$drupalUserId;
+		}
+		
+		forderepermissionadmin_internal_setRoleOnUsers ( $champUserIds, $champRole );
+		variable_set ( 'forderepermission_' . $champ->getId (), $champRole );
+		
+		if ($champ instanceof League) {
+			$leagues = $champ->getLeagues ();
+			foreach ( $leagues as $id => $name ) {
+				$leagueId = $champ->getId () . "_league_" . $id;
+				$leagueRole = $form [$leagueId] ['#value'];
+				
+				$teams = $champ->getTeams ();
+				$leagueUserIds = array ();
+				foreach ( $teams as $team ) {
+					$leagueUserIds [] = $team->getPlayer1 ()->$drupalUserId;
+					$leagueUserIds [] = $team->getPlayer2 ()->$drupalUserId;
+				}
+				
+				forderepermissionadmin_internal_setRoleOnUsers ( $leagueUserIds, $leagueRole );
+				$leagueId = $champ->getId () . "_league_" . $id;
+				variable_set ( 'forderepermission_' . $leagueId, $leagueRole );
+			}
+		}
+	}
+}
+
+function forderepermissionadmin_internal_setRoleOnUsers($users, $roleId) {
+	forderpermissionadmin_internal_removeRoleFromAllUser ( $roleId );
+	foreach ( $users as $userId ) {
+		forderpermissionadmin_internal_addRoleToUser ( $userId, $roleId );
+	}
+}
+
+function forderpermissionadmin_internal_getUserRoles() {
+	return user_roles ( true );
+}
+
+function forderpermissionadmin_internal_addRoleToUser($uid, $roleId) {
+	$role = user_role_load ( $roleId );
+	user_multiple_role_edit ( array (
+			$uid 
+	), 'add_role', $role->rid );
+}
+
+function forderpermissionadmin_internal_removeRoleFromAllUser($roleId) {
+	$sql = "SELECT u.uid, u.name FROM {users} u INNER JOIN {users_roles} ur ON u.uid = ur.uid WHERE ur.rid = %d";
+	
+	$results = db_query ( $sql, array (
+			$roleId 
+	) );
+	
+	foreach ( $results as $record ) {
+		echo "Remove " . $roleId . " from " . $record ['u.uid'];
+		
+		// forderpermissionadmin_internal_removeRoleFromSingleUser ( $record ['u.uid'], $roleId );
+	}
+}
+
+function forderpermissionadmin_internal_removeRoleFromSingleUser($userId, $roleId) {
+	echo "Assign " . $roleId . " to " . $userId;
+	// $role = user_role_load ( $roleId );
+	// user_multiple_role_edit ( array (
+	// $userId
+	// ), 'remove_role', $role->rid );
+}
+
+function forderepermissionadmin_internal_getAllSeasonUser() {
+	$currentSeason = Season::getCurrentSeason ();
+	$teamsArr = array ();
+	// TODO: this could be moved to Season class
+	// Get all Teams playing this season
+	$teams = array ();
+	foreach ( $currentSeason->championschips as $champ ) {
+		$newteams = $champ->getTeams ();
+		$teams = array_merge ( $teams, $newteams );
+		
+		if ($champ->getRegisterOver () != 0) {
+			continue;
+		}
+		
+		foreach ( $newteams as $team ) {
+			
+			if (! array_key_exists ( $team->getPlayer1 ()->id, $teamsArr )) {
+				$teamsArr [$team->getPlayer1 ()->id] = array ();
+			}
+			$teamsArr [$team->getPlayer1 ()->id] [] = array (
+					'champ' => $champ->getName (),
+					'team' => $team->getName () 
+			);
+			
+			if (! array_key_exists ( $team->getPlayer2 ()->id, $teamsArr )) {
+				$teamsArr [$team->getPlayer2 ()->id] = array ();
+			}
+			$teamsArr [$team->getPlayer2 ()->id] [] = array (
+					'champ' => $champ->getName (),
+					'team' => $team->getName () 
+			);
+		}
+	}
+	
+	$players = array ();
+	foreach ( $teams as $team ) {
+		$players [] = $team->getPlayer1 ()->$drupalUserId;
+		$players [] = $team->getPlayer2 ()->$drupalUserId;
+	}
+	
+	return $players;
+}
+
+function forderepermissionadmin_internal_getAllUsers() {
+	$uids = array ();
+	$query = db_select ( 'users', 'u' );
+	$query->fields ( 'u', array (
+			'uid' 
+	) );
+	$result = $query->execute ();
+	while ( $record = $result->fetchAssoc () ) {
+		$uids [] = $record ['uid'];
+	}
+	
+	return $uids;
 }
