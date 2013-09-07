@@ -90,7 +90,6 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 	forderepermissionadmin_internal_setRoleOnUsers ( $nonSeasonUsers, $nonSeasonUsersRole );
 	variable_set ( 'forderepermission_allnonplayer', $nonSeasonUsersRole );
 	
-	return;
 	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
 		
 		$champRole = $form [$champ->getId ()] ['#value'];
