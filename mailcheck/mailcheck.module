@@ -1,0 +1,74 @@
+<?php
+
+function mailcheck_menu() {
+	$items = array ();
+	
+	$items ['mailcheck'] = array (
+			'title' => 'Mail Check',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'mailcheck_internal_getMailCheckForm' 
+			),
+			'access arguments' => array (
+					'fordere_mailcheck' 
+			) 
+	);
+	
+	return $items;
+}
+
+function mailcheck_permissions() {
+	return array (
+			'fordere_mailcheck' => array (
+					'title' => 'Fordere MailCheck Administration',
+					'description' => 'Mail Checker für fordere' 
+			) 
+	);
+}
+
+function mailcheck_internal_getMailCheckForm() {
+	
+	$form ['targetMail'] = array (
+			'#type' => "textbox",
+			'#title' => t ( 'Target E-Mail' ),
+			'#description' => t ( 'E-Mail Adresse an welche die Test-Mail gesendet wird' ),
+	);
+	
+	
+	$form ['sendButton'] = array (
+			'#value' => t ( 'Send test mail' ),
+			'#type' => 'submit',
+			'#prefix' => '<p>',
+			'#sufix' => '</p>' 
+	);
+	
+	return $form;
+}
+
+function mailcheck_internal_getMailCheckForm_submit($form, $form_state) {
+	
+	$targetMail = $form ['targetMail'] ['#value'];
+	
+	$params = getRegistrationConfirmationParams();
+	drupal_mail ( 'fordere', 'confirmation', array($targetMail), language_default (), $params );
+	
+}
+
+function getRegistrationConfirmationParams() {
+	$args = array ();
+	$args ['@player1name'] ="Player1 Name";
+	$args ['@player1email'] = "player1@hisdomain.ch";
+	$args ['@player1phone'] = "0797532861";
+	$args ['@player2name'] = "Player2 Name";
+	$args ['@player2email'] = "player2@hisdomain.ch";
+	$args ['@player2phone'] = "0797532648";
+	$args ['@teamname'] = "Super duper Team Name";
+	$args ['@homelocation'] = "Sansibar";
+	$args ['@username'] = "DrupalUserName";
+	$args ['@championschip'] = "Liga";
+
+	$args ['!additionalteamfields'] = "AdditinalField1: TestValue<br /> AdditonalField2: TestValue";
+
+	return $args;
+}
+

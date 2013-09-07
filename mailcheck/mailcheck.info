@@ -1,0 +1,5 @@
+name = Fordere mail check module
+description = Module to check configured mails
+dependencies[] = fordere
+package=Fordere
+core = 7.x
