@@ -75,8 +75,12 @@ function fordere_permission() {
 					'description' => 'Erlaubt es, dass der Benutzer Shirts bestellen kann' 
 			) ,'fordere mailcheck admin' => array (
 					'title' => 'Fordere MailCheck Administration',
-					'description' => 'Mail Checker für fordere' 
+					'description' => 'Mail Checker fuer fordere' 
 			) 
+			,'administer fordere settings' => array (
+					'title' => 'Fordere Settings',
+					'description' => 'Settings fuer fordere.ch'
+			)
 	);
 }
 
