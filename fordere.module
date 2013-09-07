@@ -428,14 +428,13 @@ function fordere_mail($key, &$message, $params) {
 	}
 }
 
-function getMailBody($key, $params) {
+function getMailBody($varkey, $params) {
 	$args = array ();
 	foreach ( $params as $key => $value ) {
 		$args ['@' . $key] = $value;
 	}
 	
-	return strlen(variable_get ( $key )) . " " + $key;
-	return t ( variable_get ( $key ), $args );
+	return t ( variable_get ( $varkey ), $args );
 }
 
 function formatAdditonalFields($fields) {
