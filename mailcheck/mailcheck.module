@@ -29,7 +29,7 @@ function mailcheck_permissions() {
 function mailcheck_internal_getMailCheckForm() {
 	
 	$form ['targetMail'] = array (
-			'#type' => "textbox",
+			'#type' => "textfield",
 			'#title' => t ( 'Target E-Mail' ),
 			'#description' => t ( 'E-Mail Adresse an welche die Test-Mail gesendet wird' ),
 	);
