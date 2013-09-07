@@ -19,7 +19,7 @@ function mailcheck_menu() {
 
 function mailcheck_permissions() {
 	return array (
-			'fordere_mailcheck' => array (
+			'mailcheck admin' => array (
 					'title' => 'Fordere MailCheck Administration',
 					'description' => 'Mail Checker für fordere' 
 			) 
