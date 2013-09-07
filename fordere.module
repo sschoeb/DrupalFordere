@@ -434,7 +434,7 @@ function getMailBody($key, $params) {
 		$args ['@' . $key] = $value;
 	}
 	
-	return variable_get ( $key );
+	return "Hallo";
 	return t ( variable_get ( $key ), $args );
 }
 
