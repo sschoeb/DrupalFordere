@@ -409,6 +409,10 @@ function addLateTeam($champId, $teamId) {
 
 function fordere_mail($key, &$message, $params) {
 	switch ($key) {
+		case 'confirmation_test' :
+			$message ['subject'] = 'Anmeldebestaetigung ' . $params ['championschip'];
+			$message ['body'] = getMailBody ( "fordere_mail_confirmation_registration", $params );
+			break;
 		case 'confirmation' :
 			$message ['subject'] = 'Anmeldebestaetigung ' . $params ['championschip'];
 			$message ['body'] = getMailBody ( "fordere_mail_confirmation_registration", getRegistrationConfirmationParams ( $params ['player1'], $params ['player2'], $params ['team'], $params ['championschip'] ) );

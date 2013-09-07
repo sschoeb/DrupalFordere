@@ -50,11 +50,12 @@ function mailcheck_internal_getMailCheckForm_submit($form, $form_state) {
 	$targetMail = $form ['targetMail'] ['#value'];
 	
 	$params = mailcheck_internal_getRegistrationConfirmationParams();
-	drupal_mail ( 'fordere', 'confirmation', array($targetMail), language_default (), $params );
+	drupal_mail ( 'fordere', 'confirmation_test', array($targetMail), language_default (), $params );
 	
 }
 
 function mailcheck_internal_getRegistrationConfirmationParams() {
+	
 	$args = array ();
 	$args ['@player1name'] ="Player1 Name";
 	$args ['@player1email'] = "player1@hisdomain.ch";
