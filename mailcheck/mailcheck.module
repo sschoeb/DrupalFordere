@@ -66,6 +66,7 @@ function mailcheck_internal_getRegistrationConfirmationParams() {
 	$args ['@teamname'] = "Super duper Team Name";
 	$args ['@homelocation'] = "Sansibar";
 	$args ['@username'] = "DrupalUserName";
+	$args ['championschip'] = "Liga";
 	$args ['@championschip'] = "Liga";
 
 	$args ['!additionalteamfields'] = "AdditinalField1: TestValue<br /> AdditonalField2: TestValue";
