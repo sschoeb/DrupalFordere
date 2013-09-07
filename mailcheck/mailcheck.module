@@ -57,17 +57,16 @@ function mailcheck_internal_getMailCheckForm_submit($form, $form_state) {
 function mailcheck_internal_getRegistrationConfirmationParams() {
 	
 	$args = array ();
-	$args ['@player1name'] ="Player1 Name";
-	$args ['@player1email'] = "player1@hisdomain.ch";
-	$args ['@player1phone'] = "0797532861";
-	$args ['@player2name'] = "Player2 Name";
-	$args ['@player2email'] = "player2@hisdomain.ch";
-	$args ['@player2phone'] = "0797532648";
-	$args ['@teamname'] = "Super duper Team Name";
-	$args ['@homelocation'] = "Sansibar";
-	$args ['@username'] = "DrupalUserName";
+	$args ['player1name'] ="Player1 Name";
+	$args ['player1email'] = "player1@hisdomain.ch";
+	$args ['player1phone'] = "0797532861";
+	$args ['player2name'] = "Player2 Name";
+	$args ['player2email'] = "player2@hisdomain.ch";
+	$args ['player2phone'] = "0797532648";
+	$args ['teamname'] = "Super duper Team Name";
+	$args ['homelocation'] = "Sansibar";
+	$args ['username'] = "DrupalUserName";
 	$args ['championschip'] = "Liga";
-	$args ['@championschip'] = "Liga";
 
 	$args ['!additionalteamfields'] = "AdditinalField1: TestValue<br /> AdditonalField2: TestValue";
 

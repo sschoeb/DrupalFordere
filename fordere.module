@@ -452,18 +452,18 @@ function formatAdditonalFields($fields) {
 
 function getRegistrationConfirmationParams($player1, $player2, $team, $championschip) {
 	$args = array ();
-	$args ['@player1name'] = $player1->name;
-	$args ['@player1email'] = $player1->getContactEmail ();
-	$args ['@player1phone'] = $player1->getPhone ();
-	$args ['@player2name'] = $player2->name;
-	$args ['@player2email'] = $player2->getContactEmail ();
-	$args ['@player2phone'] = $player2->getPhone ();
-	$args ['@teamname'] = $team->name;
-	$args ['@homelocation'] = Team::getHomeLocation ( $team->id );
-	$args ['@username'] = $player1->getDrupalUserName ();
-	$args ['@championschip'] = $championschip;
+	$args ['player1name'] = $player1->name;
+	$args ['player1email'] = $player1->getContactEmail ();
+	$args ['player1phone'] = $player1->getPhone ();
+	$args ['player2name'] = $player2->name;
+	$args ['player2email'] = $player2->getContactEmail ();
+	$args ['player2phone'] = $player2->getPhone ();
+	$args ['teamname'] = $team->name;
+	$args ['homelocation'] = Team::getHomeLocation ( $team->id );
+	$args ['username'] = $player1->getDrupalUserName ();
+	$args ['championschip'] = $championschip;
 	
-	$args ['!additionalteamfields'] = formatAdditonalFields ( $team->getAdditonalFields () );
+	$args ['additionalteamfields'] = formatAdditonalFields ( $team->getAdditonalFields () );
 	
 	return $args;
 }
