@@ -73,6 +73,9 @@ function fordere_permission() {
 			'fordere order shirt' => array (
 					'title' => 'Order Shirt',
 					'description' => 'Erlaubt es, dass der Benutzer Shirts bestellen kann' 
+			) ,'fordere mailcheck admin' => array (
+					'title' => 'Fordere MailCheck Administration',
+					'description' => 'Mail Checker für fordere' 
 			) 
 	);
 }

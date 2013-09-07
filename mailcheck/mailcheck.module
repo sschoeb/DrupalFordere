@@ -10,20 +10,11 @@ function mailcheck_menu() {
 					'mailcheck_internal_getMailCheckForm' 
 			),
 			'access arguments' => array (
-					'fordere_mailcheck' 
+					'fordere mailcheck admin' 
 			) 
 	);
 	
 	return $items;
-}
-
-function mailcheck_permissions() {
-	return array (
-			'mailcheck admin' => array (
-					'title' => 'Fordere MailCheck Administration',
-					'description' => 'Mail Checker für fordere' 
-			) 
-	);
 }
 
 function mailcheck_internal_getMailCheckForm() {
