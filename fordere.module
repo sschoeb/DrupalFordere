@@ -97,12 +97,12 @@ function fordere_node_info() {
 					'locked' => FALSE 
 			),
 			'fordere_team' => array (
-					'name' => t ( 'Team zz' ),
+					'name' => t ( 'Team' ),
 					'base' => 'fordere',
 					'base table' => 'node',
-					'description' => t ( 'Team aaa' ),
+					'description' => t ( 'Team' ),
 					'has_title' => TRUE,
-					'title_label' => t ( 'Team bbb' ),
+					'title_label' => t ( 'Team' ),
 					'locked' => FALSE 
 			),
 			'fordere_location' => array (
