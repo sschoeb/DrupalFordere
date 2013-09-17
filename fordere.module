@@ -614,7 +614,7 @@ function orderShirtsForm($form, $form_state) {
 	$form ['title'] = array (
 			'#type' => 'item',
 			'#title' => t ( "T-Shirt bestellen" ),
-			'#description' => "Hier hast du die M&ouml;glichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-" 
+			'#description' => "Hier hast du die M&ouml;glichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.- also los" 
 	);
 	$form ['quantity'] = array (
 			'#type' => 'textfield',
