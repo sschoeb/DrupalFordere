@@ -658,10 +658,25 @@ function orderShirtsForm_validate($form, $form_state) {
 }
 
 function orderShirtsForm_submit($form, &$form_state) {
+	
+	$sizes = array (
+					"XS",
+					"S",
+					"M",
+					"L",
+					"XL",
+					"XXL" 
+			) ;
+	
+	$genders = array (
+					"Mann",
+					"Frau" 
+			) ;
+	
 	$params = array (
 			'quantity' => $form ['quantity'] ['#value'],
-			'size' => $form ['size'] ['#value'],
-			'gender' => $form ['gender'] ['#value'],
+			'size' => $sizes[$form ['size'] ['#value']],
+			'gender' => $genders[$form ['gender'] ['#value']],
 			'username' => Player::getCurrentUserPlayer ()->getDrupalUserName () 
 	);
 	
