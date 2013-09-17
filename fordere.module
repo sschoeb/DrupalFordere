@@ -614,7 +614,7 @@ function orderShirtsForm($form, $form_state) {
 	$form ['title'] = array (
 			'#type' => 'item',
 			'#title' => t ( "T-Shirt bestellen" ),
-			'#description' => "Hier hast du die Möglichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-" 
+			'#description' => "Hier hast du die M&ouml;glichkeit dein fordere.ch-Shirt zu bestellen. Jedes Shirt kostet dich nur 10.-" 
 	);
 	$form ['quantity'] = array (
 			'#type' => 'textfield',
@@ -671,6 +671,9 @@ function orderShirtsForm_submit($form, $form_state) {
 	);
 	
 	drupal_mail ( 'fordere', 'orderconfirmation', $mails, language_default (), $params );
+	drupal_set_message("Shirt Bestellung abgesendet. &Uuml;berpr&uuml;fe deine E-Mails ob die Best&auml;tigung angekommen ist. Falls nicht kontaktiere uns bitte unter info@fordere.ch", 'status');
+	
+	$form_state ['redirect'] = 'season/dashboard';
 }
 
 function getTeamAdminForm($form, $form_state, $championschipId) {
