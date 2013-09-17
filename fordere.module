@@ -657,7 +657,7 @@ function orderShirtsForm_validate($form, $form_state) {
 	}
 }
 
-function orderShirtsForm_submit($form, $form_state) {
+function orderShirtsForm_submit($form, &$form_state) {
 	$params = array (
 			'quantity' => $form ['quantity'] ['#value'],
 			'size' => $form ['size'] ['#value'],
