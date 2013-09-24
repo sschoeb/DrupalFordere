@@ -598,10 +598,6 @@ class League extends Championschip {
 				'#value' => $this->id 
 		);
 		
-		$formout ['#theme'] = 'adminteam';
-		
-		
-		die("Created");
 		return $formout;
 	}
 
