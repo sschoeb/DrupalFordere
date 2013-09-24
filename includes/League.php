@@ -243,9 +243,8 @@ class League extends Championschip {
 		
 		return $teams;
 	}
-	
-	public function getRegisteredTeams()
-	{
+
+	public function getRegisteredTeams() {
 		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
 		$query->condition ( 'tic.championschipid', $this->id );
 		$query->addField ( 'tic', 'teamid' );
@@ -549,16 +548,18 @@ class League extends Championschip {
 					'#markup' => $i 
 			);
 			$formout ['items'] [$team->id] ['teamname'] = array (
-					'#markup' => '<b>' . $team->id . '</b><a href="mailto:' . $team->getPlayer1 ()->getContactEmail () . ';' . $team->getPlayer2 ()->getContactEmail () . '">' . $team->getName () . '</a>' 
+					'#markup' => '<a href="mailto:' . $team->getPlayer1 ()->getContactEmail () . ';' . $team->getPlayer2 ()->getContactEmail () . '">' . $team->getName () . '</a><br /><b>' . $team->id . '</b>' 
 			);
 			$formout ['items'] [$team->id] ['player1'] = array (
-					'#markup' => $team->getPlayer1 ()->drupalUserId . $team->getPlayer1 ()->name . "<br />" . $team->getPlayer1 ()->getContactEmail () . '<br />' . $team->getPlayer1 ()->getPhone () 
+					'#markup' => $team->getPlayer1 ()->name . "(" . $team->getPlayer1 ()->drupalUserId . ")<br />" . $team->getPlayer1 ()->getContactEmail () . '<br />' . $team->getPlayer1 ()->getPhone () 
 			);
 			$formout ['items'] [$team->id] ['player2'] = array (
-					'#markup' => $team->getPlayer2 ()->drupalUserId . $team->getPlayer2 ()->name . "<br />" . $team->getPlayer2 ()->getContactEmail () . '<br />' . $team->getPlayer2 ()->getPhone () 
+					'#markup' => $team->getPlayer2 ()->name . "(" . $team->getPlayer2 ()->drupalUserId . ")<br />" . $team->getPlayer2 ()->getContactEmail () . '<br />' . $team->getPlayer2 ()->getPhone () 
 			);
 			
-			$formout ['items'] [$team->id] ['wishleague'] = array('#markup' => $team->wishleague);
+			$formout ['items'] [$team->id] ['wishleague'] = array (
+					'#markup' => $team->wishleague 
+			);
 			
 			$formout ['items'] [$team->id] ['leagueselect'] = array (
 					'#prefix' => '<div id="leagueselect_' . $team->id . '">',
@@ -567,7 +568,9 @@ class League extends Championschip {
 			
 			if (! $this->isTeamInLeague ( $team ) && ! $this->isLeagueNewSet ( $form_state, $team->id )) {
 				
-				$formout ['items'] [$team->id] ['leagueselect'] ['league' . $team->id] = array('#markup' => $team->league);
+				$formout ['items'] [$team->id] ['leagueselect'] ['league' . $team->id] = array (
+						'#markup' => $team->league 
+				);
 				$formout ['items'] [$team->id] ['leagueselect'] ['submit' . $team->id] = array (
 						'#type' => 'button',
 						'#tree' => true,
@@ -626,7 +629,6 @@ class League extends Championschip {
 	}
 
 	public function themeTeamAdmin($vars) {
-		
 		$header = array (
 				'Nr. ',
 				'Teamname',
