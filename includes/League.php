@@ -232,11 +232,14 @@ class League extends Championschip {
 	}
 
 	public function getTeams() {
-		$groups = $this->getLeagueGroups ( $this->id );
-		$teams = array ();
-		
-		foreach ( $groups as $group ) {
-			$teams = array_merge ( $teams, $this->getTeamsForGroup ( $this->id, $group ) );
+		$leagues = $this->getLeagues ();
+		foreach ( $leagues as $leagueId => $leagueName ) {
+			$groups = $this->getLeagueGroups ( $leagueId );
+			$teams = array ();
+			
+			foreach ( $groups as $group ) {
+				$teams = array_merge ( $teams, $this->getTeamsForGroup ( $this->id, $group ) );
+			}
 		}
 		
 		return $teams;
@@ -523,7 +526,7 @@ class League extends Championschip {
 				'sortbyleague' 
 		) );
 		
-		var_dump($teams);
+		var_dump ( $teams );
 		
 		$i = 1;
 		foreach ( $teams as $team ) {
