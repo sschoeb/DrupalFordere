@@ -258,6 +258,10 @@ class League extends Championschip {
 			$team->getName ();
 			$teams [] = $team;
 		}
+		
+		var_dump($teams);
+		die();
+		
 		return $teams;
 	}
 
