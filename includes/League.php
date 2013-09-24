@@ -236,7 +236,7 @@ class League extends Championschip {
 		$teams = array ();
 		foreach ( $leagues as $leagueId => $leagueName ) {
 			$groups = $this->getLeagueGroups ( $leagueId );
-			
+			var_dump($groups);
 			foreach ( $groups as $group ) {
 				$teams = array_merge ( $teams, $this->getTeamsForGroup ( $leagueId, $group ) );
 			}
