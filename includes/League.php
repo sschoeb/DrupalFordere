@@ -523,6 +523,8 @@ class League extends Championschip {
 				'sortbyleague' 
 		) );
 		
+		var_dump($teams);
+		
 		$i = 1;
 		foreach ( $teams as $team ) {
 			$formout ['items'] [$team->id] ['nr'] = array (
