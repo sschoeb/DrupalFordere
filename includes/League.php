@@ -259,9 +259,6 @@ class League extends Championschip {
 			$teams [] = $team;
 		}
 		
-		var_dump($teams);
-		die();
-		
 		return $teams;
 	}
 
