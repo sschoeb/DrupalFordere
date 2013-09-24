@@ -319,7 +319,7 @@ class Team {
 		
 		if (! isset ( $this->additonalFields [$key] )) {
 			//throw new Exception ( 'Missing field: ' . $key );
-			return "Not found";
+			return $key . " Not found";
 		}
 		
 		$var = $this->additonalFields [$key];
