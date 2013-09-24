@@ -350,16 +350,15 @@ class Team {
 		
 		$this->id = $team->nid;
 
-		//TODO Parameter fail
-		$this->insertPlayerInTeam ( $this->id, $this->playerId1 );
-		$this->insertPlayerInTeam ( $this->id, $this->playerId2 );
+		$this->insertPlayerInTeam ( $this->playerId1 );
+		$this->insertPlayerInTeam ( $this->playerId2 );
 		
 		$this->loadPlayers ();
 	}
 	
-	private function insertPlayerInTeam($teamId, $playerId) {
+	private function insertPlayerInTeam($playerId) {
 		db_insert ( 'fordere_playerinteam' )->fields ( array (
-				'teamid' => $teamId, 
+				'teamid' => $this -> id, 
 				'playerid' => $playerId 
 		) )->execute ();
 	}
@@ -370,8 +369,6 @@ class Team {
 	}
 	
 	public static function getPlayerId($userId) {
-		
-		
 		$seasonId = Season::getCurrentSeasonId ();
 		
 		$select = db_select ( 'fordere_player', 'p' );
@@ -440,3 +437,8 @@ class Team {
 
 }
 
+
+class LeagueTeam extends Team
+{
+	
+}

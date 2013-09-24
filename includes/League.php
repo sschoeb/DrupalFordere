@@ -556,7 +556,7 @@ class League extends Championschip {
 			$formout ['items'] [$team->id] ['player2'] = array (
 					'#markup' => $team->getPlayer2 ()->name . "(" . $team->getPlayer2 ()->drupalUserId . ")<br />" . $team->getPlayer2 ()->getContactEmail () . '<br />' . $team->getPlayer2 ()->getPhone () 
 			);
-			
+
 			$formout ['items'] [$team->id] ['wishleague'] = array (
 					'#markup' => $team->wishleague 
 			);
