@@ -600,6 +600,8 @@ class League extends Championschip {
 		
 		$formout ['#theme'] = 'adminteam';
 		
+		
+		die("Created");
 		return $formout;
 	}
 
