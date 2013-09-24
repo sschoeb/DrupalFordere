@@ -600,6 +600,9 @@ class League extends Championschip {
 		
 		$formout ['#theme'] = 'adminteam';
 		
+		echo "<pre>";
+		die(var_dump($formout));
+		
 		return $formout;
 	}
 
@@ -626,8 +629,6 @@ class League extends Championschip {
 	}
 
 	public function themeTeamAdmin($vars) {
-		
-		die("Start theme");
 		
 		$header = array (
 				'Nr. ',
