@@ -177,7 +177,7 @@ class Season {
 				 <div class="twelve columns">
     <div class="panel">
       <h3>T-Shirt Aktion 2013</h3>
-      <p>Damit du auch kleidungstechnisch optimal auf die Saison vorbereitet bist, hast du dieses Jahr die einmalige M&ouml;glichkeit f&uuml;r nur 10.- ein super cooles Shirt von fordere.ch zu kaufen. Diese Aktion l&auml;ft nur bis zum Ende der Anmeldephase. 
+      <p>Der Verein Fordere wird 10-j&auml;hrig! Und wir wollen dieses historische Ereignis w&auml;hrend der ganzen Saison feiern. </p><p>Wir legen los mit einem Jubil&auml;ums-T-Shirt, das du mit nur einem Klick w&auml;hrend der Registrierung f&uuml;r die Saison kaufen kannst. Für l&auml;ppische 10 Franken geh&ouml;rt das T-Shirt dir - sehr wahrscheinlich der beste Deal aller Zeiten! 
 	  </br>
 	  <a class="button" href="/drupal/season/orderShirt"/>Shirt bestellen</a></p>
     </div>
