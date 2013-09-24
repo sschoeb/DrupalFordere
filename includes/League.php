@@ -236,12 +236,28 @@ class League extends Championschip {
 		$teams = array ();
 		foreach ( $leagues as $leagueId => $leagueName ) {
 			$groups = $this->getLeagueGroups ( $leagueId );
-			var_dump($groups);
 			foreach ( $groups as $group ) {
 				$teams = array_merge ( $teams, $this->getTeamsForGroup ( $leagueId, $group ) );
 			}
 		}
 		
+		return $teams;
+	}
+	
+	public function getRegisteredTeams()
+	{
+		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
+		$query->condition ( 'tic.championschipid', $this->id );
+		$query->addField ( 'tic', 'teamid' );
+		$result = $query->execute ()->fetchAll ();
+		
+		$teams = array ();
+		foreach ( $result as $teamStd ) {
+			$team = Team::getTeamById ( $teamStd->teamid );
+			$team->loadState ( $this->id );
+			$team->getName ();
+			$teams [] = $team;
+		}
 		return $teams;
 	}
 
@@ -519,14 +535,12 @@ class League extends Championschip {
 	}
 
 	public function getTeamAdminForm($form, &$form_state) {
-		$teams = $this->getTeams ();
+		$teams = $this->getRegisteredTeams ();
 		
 		usort ( $teams, array (
 				'League',
 				'sortbyleague' 
 		) );
-		
-		var_dump ( $teams );
 		
 		$i = 1;
 		foreach ( $teams as $team ) {
