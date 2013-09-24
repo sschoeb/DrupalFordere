@@ -429,7 +429,9 @@ function fordere_mail($key, &$message, $params) {
 			$message ['body'] = getMailBody ( 'fordere_mail_confirmation_game', $params );
 			break;
 		case 'orderconfirmation' :
-			$message ['subject'] = 'T-Shirt Bestellung';
+			$orderNumber = variable_get('shirt_order_number', 1);
+			$message ['subject'] = '[' . $orderNumber . '] T-Shirt Bestellung ' . $params['username'];
+			variable_set('shirt_order_number', $orderNumber + 1);
 			$message ['body'] = getMailBody ( 'fordere_ordershirtmail', $params );
 			break;
 	}
