@@ -92,7 +92,6 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 	
 	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
 		
-		
 		$champRole = $form [$champ->getId ()] ['#value'];
 		$teams = $champ->getTeams ();
 		$champUserIds = array ();
@@ -125,12 +124,34 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 	}
 }
 
+function addRole($accounts, $operation, $rid) {
+	// The role name is not necessary as user_save() will reload the user
+	// object, but some modules' hook_user() may look at this first.
+	$role_name = db_query ( 'SELECT name FROM {role} WHERE rid = :rid', array (
+			':rid' => $rid 
+	) )->fetchField ();
+	
+	$accounts = user_load_multiple ( $accounts );
+	foreach ( $accounts as $account ) {
+		// Skip adding the role to the user if they already have it.
+		if ($account !== FALSE && ! isset ( $account->roles [$rid] )) {
+			$roles[$rid] = $role_name;
+			
+			// For efficiency manually save the original account before applying
+			// any changes.
+			$account->original = clone $account;
+			user_save ( $account, array (
+					'roles' => $roles 
+			) );
+		}
+	}
+}
+
 function forderepermissionadmin_internal_setRoleOnUsers($users, $roleId) {
 	forderpermissionadmin_internal_removeRoleFromAllUser ( $roleId );
 	
 	if (count ( $users ) > 0) {
-		$data = array($users[0], $users[1]);
-		user_multiple_role_edit ( $data, "add_role", $roleId );
+		addRole ( $users, "add_role", $roleId );
 	}
 }
 
@@ -165,7 +186,7 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 	$teamsArr = array ();
 	// TODO: this could be moved to Season class
 	// Get all Teams playing this season
-	//TODO: this method is just copy paste from somewhere else in fordere... can maybe be written much easier
+	// TODO: this method is just copy paste from somewhere else in fordere... can maybe be written much easier
 	$teams = array ();
 	foreach ( $currentSeason->championschips as $champ ) {
 		$newteams = $champ->getTeams ();
@@ -201,7 +222,7 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 		$players [] = $team->getPlayer2 ()->drupalUserId;
 	}
 	
-	return array_unique ($players);
+	return array_unique ( $players );
 }
 
 function forderepermissionadmin_internal_getAllUsers() {
