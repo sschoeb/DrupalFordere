@@ -134,23 +134,23 @@ function addRole($accounts, $operation, $rid) {
 	$accounts = user_load_multiple ( $accounts );
 	foreach ( $accounts as $account ) {
 		
-		try{
+		try {
 			// Skip adding the role to the user if they already have it.
 			if ($account !== FALSE && ! isset ( $account->roles [$rid] )) {
-				  $roles = $account->roles + array($rid => $role_name);
-					
+				$roles = $account->roles + array (
+						$rid => $role_name 
+				);
+				
 				// For efficiency manually save the original account before applying
 				// any changes.
 				$account->original = clone $account;
 				user_save ( $account, array (
-				'roles' => $roles
+						'roles' => $roles 
 				) );
 			}
-		}catch(PDOException $fail)
-		{
-			var_dump($account);
+		} catch ( PDOException $fail ) {
+			var_dump ( $account );
 		}
-		
 	}
 }
 
@@ -190,46 +190,45 @@ function forderpermissionadmin_internal_removeRoleFromSingleUser($userId, $roleI
 
 function forderepermissionadmin_internal_getAllSeasonUser() {
 	$currentSeason = Season::getCurrentSeason ();
-	$teamsArr = array ();
+	
+	foreach ( $currentSeason->championschips as $champ ) {
+		$newteams = $champ->getTeams ();
+		
+		foreach ( $newteams as $team ) {
+			$players [] = $team->getPlayer1 ()->drupalUserId;
+			$players [] = $team->getPlayer2 ()->drupalUserId;
+		}
+	}
+	
+	return array_unique ( $players );
+	
 	// TODO: this could be moved to Season class
 	// Get all Teams playing this season
 	// TODO: this method is just copy paste from somewhere else in fordere... can maybe be written much easier
-	$teams = array ();
-	foreach ( $currentSeason->championschips as $champ ) {
-		$newteams = $champ->getTeams ();
-		$teams = array_merge ( $teams, $newteams );
-		
-		if ($champ->getRegisterOver () != 0) {
-			continue;
-		}
-		
-		foreach ( $newteams as $team ) {
-			
-			if (! array_key_exists ( $team->getPlayer1 ()->id, $teamsArr )) {
-				$teamsArr [$team->getPlayer1 ()->id] = array ();
-			}
-			$teamsArr [$team->getPlayer1 ()->id] [] = array (
-					'champ' => $champ->getName (),
-					'team' => $team->getName () 
-			);
-			
-			if (! array_key_exists ( $team->getPlayer2 ()->id, $teamsArr )) {
-				$teamsArr [$team->getPlayer2 ()->id] = array ();
-			}
-			$teamsArr [$team->getPlayer2 ()->id] [] = array (
-					'champ' => $champ->getName (),
-					'team' => $team->getName () 
-			);
-		}
-	}
 	
-	$players = array ();
-	foreach ( $teams as $team ) {
-		$players [] = $team->getPlayer1 ()->drupalUserId;
-		$players [] = $team->getPlayer2 ()->drupalUserId;
-	}
+	// if ($champ->getRegisterOver () != 0) {
+	// continue;
+	// }
 	
-	return  ( $players );
+	// foreach ( $newteams as $team ) {
+	
+	// if (! array_key_exists ( $team->getPlayer1 ()->id, $teamsArr )) {
+	// $teamsArr [$team->getPlayer1 ()->id] = array ();
+	// }
+	// $teamsArr [$team->getPlayer1 ()->id] [] = array (
+	// 'champ' => $champ->getName (),
+	// 'team' => $team->getName ()
+	// );
+	
+	// if (! array_key_exists ( $team->getPlayer2 ()->id, $teamsArr )) {
+	// $teamsArr [$team->getPlayer2 ()->id] = array ();
+	// }
+	// $teamsArr [$team->getPlayer2 ()->id] [] = array (
+	// 'champ' => $champ->getName (),
+	// 'team' => $team->getName ()
+	// );
+	// }
+	// }
 }
 
 function forderepermissionadmin_internal_getAllUsers() {
