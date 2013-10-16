@@ -311,7 +311,6 @@ class Team {
 	
 	public function loadAdditionalFields()
 	{
-		
 		$this -> loadChampionschips();
 		
 		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
@@ -320,11 +319,6 @@ class Team {
 		$query->condition ( 'tic.championschipid', $this->championschips[0] -> getId() );
 		$query->condition ( 'tic.teamid', $this -> id );
 		$data = $query->execute ()->fetchField ();
-		
-		if(!$data)
-		{
-			echo "FAIL for " . $this->championschips[0];
-		}
 		
 		$this -> addAdditionalField('wishleague', $data);
 	}
@@ -353,7 +347,6 @@ class Team {
 	//TODO: gute Idee mit diesen additonal Fields?
 	private $additonalFields = array ();
 	public function addAdditionalField($key, $value) {
-		echo $key . "/" . $value . "<br />";
 		$this->additonalFields [$key] = $value;
 	}
 	

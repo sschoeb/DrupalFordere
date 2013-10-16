@@ -369,20 +369,27 @@ function fordereadmin_internal_adminchampteams($champId) {
 		$form ['team' . $team->id] = array (
 				'#prefix' => '<tr><td>',
 				'#suffix' => '</td>',
-				'#markup' => $team->getName ()
+				'#markup' => $team->getName () 
 		);
 		
 		$form ['team' . $team->id . '_wishleague'] = array (
 				'#prefix' => '<td>',
 				'#suffix' => '</td>',
-				'#markup' => $team->wishleague
+				'#markup' => $team->wishleague 
 		);
 		
-		$form ['team' . $team->id . '_commit'] = array (
-				'#prefix' => '<td>',
-				'#suffix' => '</td></tr>',
-				'#type' => 'submit' 
-		);
+		if ($team->getLeagueApproved () > 0) {
+			$form ['team' . $team->id . '_commit'] = array (
+					'#markup' => '<td>' . $team->getLeagueApprovedName () . '</td></tr>' 
+			);
+		} else {
+			$form ['team' . $team->id . '_commit'] = array (
+					'#prefix' => '<td>',
+					'#suffix' => '</td></tr>',
+					'#type' => 'submit',
+					'#value' => t ( 'Eintragen' ) 
+			);
+		}
 	}
 	
 	$form ['tableend'] = array (
@@ -390,6 +397,13 @@ function fordereadmin_internal_adminchampteams($champId) {
 	);
 	
 	return $form;
+}
+
+
+
+function fordereadmin_internal_adminchampteams_submit($form, $form_state) {
+	echo "<pre>";
+	var_dump ( $form_state );
 }
 
 function fordereadmin_internal_adminseason_newchamp($seasonId) {
