@@ -24,6 +24,11 @@ class Cup extends Championschip {
 	
 	}
 	
+	public function getRegisteredTeams()
+	{
+		return array();
+	}
+	
 	public function getCurrentStateDescription() {
 		return "Runden";
 	}
