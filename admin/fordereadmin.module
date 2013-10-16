@@ -63,7 +63,7 @@ function fordereadmin_menu() {
 						2 
 				),
 				'access arguments' => array (
-						'fordere administration' 
+						'fordere admin' 
 				),
 				'type' => MENU_LOCAL_TASK 
 		);
@@ -76,7 +76,7 @@ function fordereadmin_menu() {
 							3 
 					),
 					'access arguments' => array (
-							'fordere administration' 
+							'fordere admin' 
 					) 
 			);
 			
@@ -87,7 +87,7 @@ function fordereadmin_menu() {
 							'fordereadmin_internal_adminchampteams',
 					),
 					'access arguments' => array (
-							'fordere administration' 
+							'fordere admin' 
 					) 
 			);
 			

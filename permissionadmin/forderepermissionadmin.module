@@ -109,7 +109,7 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 				$leagueId = $champ->getId () . "_league_" . $id;
 				$leagueRole = $form [$leagueId] ['#value'];
 				
-				$teams = $champ->getTeams ();
+				$teams = $champ->getRegisteredTeams ();
 				$leagueUserIds = array ();
 				foreach ( $teams as $team ) {
 					$leagueUserIds [] = $team->getPlayer1 ()->drupalUserId;
