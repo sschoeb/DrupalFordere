@@ -311,6 +311,7 @@ class Team {
 	
 	public function loadAdditionalFields()
 	{
+		$this -> loadChampionschips();
 		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
 		$query->join ( 'fordere_league', 'l', 'l.id=tic.league_wish' );
 		$query->addField ( 'l', 'name' );
