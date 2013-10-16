@@ -358,18 +358,36 @@ function fordereadmin_internal_adminchampteams($champId) {
 	$champ = Championschip::CreateChampionschip ( $champId );
 	$form = array ();
 	
+	$form ['tablestart'] = array (
+			'#markup' => '<table><tr><th>Name</th><th>Wunschliga</th><th>Eintragen</th></tr>' 
+	);
 	$teams = $champ->getRegisteredTeams ();
 	foreach ( $teams as $team ) {
 		
-		$team -> loadAdditionalFields();
+		$team->loadAdditionalFields ();
 		
 		$form ['team' . $team->id] = array (
-				'#markup' => "<br />Team: " . $team->getName () . " )" . $team -> wishleague . "("
+				'#prefix' => '<tr><td>',
+				'#suffix' => '</td>',
+				'#markup' => $team->getName ()
 		);
+		
+		$form ['team' . $team->id . '_wishleague'] = array (
+				'#prefix' => '<tr><td>',
+				'#suffix' => '</td>',
+				'#markup' => $team->wishleague
+		);
+		
 		$form ['team' . $team->id . '_commit'] = array (
+				'#prefix' => '<td>',
+				'#suffix' => '</td></tr>',
 				'#type' => 'submit' 
 		);
 	}
+	
+	$form ['tableend'] = array (
+			'#markup' => '</table>' 
+	);
 	
 	return $form;
 }
