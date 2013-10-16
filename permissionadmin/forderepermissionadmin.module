@@ -129,9 +129,8 @@ function forderepermissionadmin_internal_setRoleOnUsers($users, $roleId) {
 	forderpermissionadmin_internal_removeRoleFromAllUser ( $roleId );
 	
 	if (count ( $users ) > 0) {
-		
-		die($roleId);
-		user_multiple_role_edit ( $users, "add_role", $roleId );
+		$data = array($users[0], $users[1]);
+		user_multiple_role_edit ( $data, "add_role", $roleId );
 	}
 }
 
