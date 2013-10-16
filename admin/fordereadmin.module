@@ -373,7 +373,7 @@ function fordereadmin_internal_adminchampteams($champId) {
 		);
 		
 		$form ['team' . $team->id . '_wishleague'] = array (
-				'#prefix' => '<tr><td>',
+				'#prefix' => '<td>',
 				'#suffix' => '</td>',
 				'#markup' => $team->wishleague
 		);
