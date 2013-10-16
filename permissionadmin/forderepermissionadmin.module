@@ -229,7 +229,7 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 		$players [] = $team->getPlayer2 ()->drupalUserId;
 	}
 	
-	return array_unique ( $players );
+	return  ( $players );
 }
 
 function forderepermissionadmin_internal_getAllUsers() {
