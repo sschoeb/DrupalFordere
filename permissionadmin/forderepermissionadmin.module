@@ -149,7 +149,7 @@ function addRole($accounts, $operation, $rid) {
 				) );
 			}
 		} catch ( PDOException $fail ) {
-			echo $account -> uid;
+			echo "<br />Fail: " .$account -> uid;
 			echo "<br/>";
 		}
 	}
