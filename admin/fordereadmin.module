@@ -364,7 +364,7 @@ function fordereadmin_internal_adminchampteams($champId) {
 		$team -> loadAdditionalFields();
 		
 		$form ['team' . $team->id] = array (
-				'#markup' => "<br />Team: " . $team->getName () . " " . $team -> wishleague 
+				'#markup' => "<br />Team: " . $team->getName () . " )" . $team -> wishleague . "("
 		);
 		$form ['team' . $team->id . '_commit'] = array (
 				'#type' => 'submit' 
