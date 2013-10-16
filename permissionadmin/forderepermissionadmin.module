@@ -137,7 +137,7 @@ function addRole($accounts, $operation, $rid) {
 		try{
 			// Skip adding the role to the user if they already have it.
 			if ($account !== FALSE && ! isset ( $account->roles [$rid] )) {
-				$roles[$rid] = $role_name;
+				  $roles = $account->roles + array($rid => $role_name);
 					
 				// For efficiency manually save the original account before applying
 				// any changes.
