@@ -188,8 +188,7 @@ function fordereadmin_permissions() {
 					'title' => 'Fordere Administration',
 					'description' => 'Administrieren der Saison und der einzelnen Wettbewerbe' 
 			) 
-	)
-	;
+	);
 }
 
 function fordereadmin_internal_cupmailopen($champId) {
@@ -356,17 +355,22 @@ function fordereadmin_internal_adminchamp($champId) {
 }
 
 function fordereadmin_internal_adminchampteams($champId) {
+	$champ = Championschip::CreateChampionschip ( $champId );
+	$form = array ();
 	
-	$champ = Championschip::CreateChampionschip($champId);
-	$form = array();
-	
-	$teams = $champ -> getRegisteredTeams();
-	foreach ($teams as $team)
-	{
-		$form['team' . $team -> id] = array('#markup' => "Team: " . $team -> getName());
+	$teams = $champ->getRegisteredTeams ();
+	foreach ( $teams as $team ) {
+		
+		$team -> loadAdditionalFields();
+		
+		$form ['team' . $team->id] = array (
+				'#markup' => "<br />Team: " . $team->getName () . " " . $team -> wishleague 
+		);
+		$form ['team' . $team->id . '_commit'] = array (
+				'#type' => 'submit' 
+		);
 	}
 	
-	$form['title'] = array('#markup' => count($teams));
 	return $form;
 }
 
