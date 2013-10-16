@@ -320,7 +320,7 @@ class Team {
 		
 		if(!$data)
 		{
-			echo "FAIL for " . $this -> id;
+			echo "FAIL for " . $this->championschips[0];
 		}
 		
 		$this -> addAdditionalField('wishleague', $data);
