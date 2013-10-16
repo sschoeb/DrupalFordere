@@ -316,8 +316,14 @@ class Team {
 		$query->addField ( 'l', 'name' );
 		$query->condition ( 'tic.championschipid', $this->championschips[0] );
 		$query->condition ( 'tic.teamid', $this -> id );
+		$data = $query->execute ()->fetchField ();
 		
-		$this -> addAdditionalField('wishleague', $query->execute ()->fetchField ());
+		if(!$data)
+		{
+			echo "FAIL for " . $this -> id;
+		}
+		
+		$this -> addAdditionalField('wishleague', $data);
 	}
 	
 	//TODO: Hack3000
