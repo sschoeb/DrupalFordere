@@ -344,6 +344,7 @@ class Team {
 	//TODO: gute Idee mit diesen additonal Fields?
 	private $additonalFields = array ();
 	public function addAdditionalField($key, $value) {
+		echo $key . "/" . $value . "<br />";
 		$this->additonalFields [$key] = $value;
 	}
 	
