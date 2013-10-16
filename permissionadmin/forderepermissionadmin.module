@@ -149,7 +149,8 @@ function addRole($accounts, $operation, $rid) {
 				) );
 			}
 		} catch ( PDOException $fail ) {
-			var_dump ( $account );
+			echo $account -> uid;
+			echo "<br/>";
 		}
 	}
 }
@@ -200,7 +201,11 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 		}
 	}
 	
-	return array_unique ( $players );
+	echo count($players);
+	echo "/";
+	$filtered = array_unique ( $players );
+	echo count($filtered);
+	return $filtered;
 	
 	// TODO: this could be moved to Season class
 	// Get all Teams playing this season
