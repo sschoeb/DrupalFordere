@@ -309,6 +309,17 @@ class Team {
 		$this->additonalFields = array ();
 	}
 	
+	public function loadAdditionalFields()
+	{
+		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
+		$query->join ( 'fordere_league', 'l', 'l.id=tic.league_wish' );
+		$query->addField ( 'l', 'name' );
+		$query->condition ( 'tic.championschipid', $this->championschips[0] );
+		$query->condition ( 'tic.teamid', $this -> id );
+		
+		$this -> addAdditionalField('wishleague', $query->execute ()->fetchField ());
+	}
+	
 	//TODO: Hack3000
 	public function &__get($key) {
 		

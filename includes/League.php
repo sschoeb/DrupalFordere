@@ -544,6 +544,9 @@ class League extends Championschip {
 		
 		$i = 1;
 		foreach ( $teams as $team ) {
+			
+			$team -> loadAdditionalFields();
+			
 			$formout ['items'] [$team->id] ['nr'] = array (
 					'#markup' => $i 
 			);
@@ -569,7 +572,7 @@ class League extends Championschip {
 			if (! $this->isTeamInLeague ( $team ) && ! $this->isLeagueNewSet ( $form_state, $team->id )) {
 				
 				$formout ['items'] [$team->id] ['leagueselect'] ['league' . $team->id] = array (
-						'#markup' => $team->league 
+						'#markup' => $team->wishleague 
 				);
 				$formout ['items'] [$team->id] ['leagueselect'] ['submit' . $team->id] = array (
 						'#type' => 'button',
