@@ -93,7 +93,7 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 	foreach ( Season::getCurrentSeason ()->championschips as $champ ) {
 		
 		$champRole = $form [$champ->getId ()] ['#value'];
-		$teams = $champ->getTeams ();
+		$teams = $champ->getRegisteredTeams ();
 		$champUserIds = array ();
 		foreach ( $teams as $team ) {
 			$champUserIds [] = $team->getPlayer1 ()->drupalUserId;
@@ -193,7 +193,7 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 	$currentSeason = Season::getCurrentSeason ();
 	
 	foreach ( $currentSeason->championschips as $champ ) {
-		$newteams = $champ->getTeams ();
+		$newteams = $champ->getRegisteredTeams ();
 		
 		foreach ( $newteams as $team ) {
 			$players [] = $team->getPlayer1 ()->drupalUserId;
