@@ -130,7 +130,7 @@ function forderepermissionadmin_internal_setRoleOnUsers($users, $roleId) {
 	
 	if (count ( $users ) > 0) {
 		
-		//user_multiple_role_edit ( $users, "add_role", $roleId );
+		user_multiple_role_edit ( $users, "add_role", $roleId );
 	}
 }
 
