@@ -133,17 +133,24 @@ function addRole($accounts, $operation, $rid) {
 	
 	$accounts = user_load_multiple ( $accounts );
 	foreach ( $accounts as $account ) {
-		// Skip adding the role to the user if they already have it.
-		if ($account !== FALSE && ! isset ( $account->roles [$rid] )) {
-			$roles[$rid] = $role_name;
-			
-			// For efficiency manually save the original account before applying
-			// any changes.
-			$account->original = clone $account;
-			user_save ( $account, array (
-					'roles' => $roles 
-			) );
+		
+		try{
+			// Skip adding the role to the user if they already have it.
+			if ($account !== FALSE && ! isset ( $account->roles [$rid] )) {
+				$roles[$rid] = $role_name;
+					
+				// For efficiency manually save the original account before applying
+				// any changes.
+				$account->original = clone $account;
+				user_save ( $account, array (
+				'roles' => $roles
+				) );
+			}
+		}catch(PDOException $fail)
+		{
+			echo "FailUser: " . $account;
 		}
+		
 	}
 }
 
