@@ -96,8 +96,8 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 		$teams = $champ->getTeams ();
 		$champUserIds = array ();
 		foreach ( $teams as $team ) {
-			$champUserIds [] = $team->getPlayer1 ()->$drupalUserId;
-			$champUserIds [] = $team->getPlayer2 ()->$drupalUserId;
+			$champUserIds [] = $team->getPlayer1 ()->drupalUserId;
+			$champUserIds [] = $team->getPlayer2 ()->drupalUserId;
 		}
 		
 		forderepermissionadmin_internal_setRoleOnUsers ( $champUserIds, $champRole );
@@ -112,8 +112,8 @@ function forderepermissions_internal_getPermissionForm_submit($form, $form_state
 				$teams = $champ->getTeams ();
 				$leagueUserIds = array ();
 				foreach ( $teams as $team ) {
-					$leagueUserIds [] = $team->getPlayer1 ()->$drupalUserId;
-					$leagueUserIds [] = $team->getPlayer2 ()->$drupalUserId;
+					$leagueUserIds [] = $team->getPlayer1 ()->drupalUserId;
+					$leagueUserIds [] = $team->getPlayer2 ()->drupalUserId;
 				}
 				
 				forderepermissionadmin_internal_setRoleOnUsers ( $leagueUserIds, $leagueRole );
@@ -196,8 +196,8 @@ function forderepermissionadmin_internal_getAllSeasonUser() {
 	
 	$players = array ();
 	foreach ( $teams as $team ) {
-		$players [] = $team->getPlayer1 ()->$drupalUserId;
-		$players [] = $team->getPlayer2 ()->$drupalUserId;
+		$players [] = $team->getPlayer1 ()->drupalUserId;
+		$players [] = $team->getPlayer2 ()->drupalUserId;
 	}
 	
 	return $players;

@@ -85,7 +85,6 @@ function fordereadmin_menu() {
 					'page callback' => 'drupal_get_form',
 					'page arguments' => array (
 							'fordereadmin_internal_adminchampteams',
-							3 
 					),
 					'access arguments' => array (
 							'fordere administration' 
@@ -354,8 +353,10 @@ function fordereadmin_internal_adminchamp($champId) {
 	);
 }
 
-function fordereadmin_internal_adminchampteams($champId) {
-	$champ = Championschip::CreateChampionschip ( $champId );
+function fordereadmin_internal_adminchampteams($form, &$form_submit) {
+	
+	
+	$champ = Championschip::CreateChampionschip ( 7 );
 	$form = array ();
 	
 	$form ['tablestart'] = array (
@@ -396,12 +397,15 @@ function fordereadmin_internal_adminchampteams($champId) {
 			'#markup' => '</table>' 
 	);
 	
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => t ( 'Eintragen' )
+	);
+	
 	return $form;
 }
 
-
-
-function fordereadmin_internal_adminchampteams_submit($form, $form_state) {
+function fordereadmin_internal_adminchampteams_submit($form, &$form_state) {
 	echo "<pre>";
 	var_dump ( $form_state );
 }
