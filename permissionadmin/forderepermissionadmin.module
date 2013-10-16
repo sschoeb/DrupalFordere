@@ -148,7 +148,7 @@ function addRole($accounts, $operation, $rid) {
 			}
 		}catch(PDOException $fail)
 		{
-			echo "FailUser: " . $account;
+			var_dump($account);
 		}
 		
 	}
