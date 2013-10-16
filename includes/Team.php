@@ -311,11 +311,13 @@ class Team {
 	
 	public function loadAdditionalFields()
 	{
+		
 		$this -> loadChampionschips();
+		
 		$query = db_select ( 'fordere_teaminchampionschip', 'tic' );
 		$query->join ( 'fordere_league', 'l', 'l.id=tic.league_wish' );
 		$query->addField ( 'l', 'name' );
-		$query->condition ( 'tic.championschipid', $this->championschips[0] );
+		$query->condition ( 'tic.championschipid', $this->championschips[0] -> getId() );
 		$query->condition ( 'tic.teamid', $this -> id );
 		$data = $query->execute ()->fetchField ();
 		
