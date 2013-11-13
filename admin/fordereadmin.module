@@ -370,7 +370,7 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 		$form ['team' . $team->id] = array (
 				'#prefix' => '<tr><td>',
 				'#suffix' => '</td>',
-				'#markup' => $team->getName () 
+				'#markup' => $team->getName () . '<br />' . $team -> getPlayer1() -> getName() . '<br />' . $team -> getPlayer2() -> getName()
 		);
 		
 		$form ['team' . $team->id . '_wishleague'] = array (
