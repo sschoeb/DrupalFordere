@@ -365,6 +365,7 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 	$teams = $champ->getRegisteredTeams ();
 	foreach ( $teams as $team ) {
 		
+		try{
 		$team->loadAdditionalFields ();
 		$team -> getPlayer1() -> loadName();
 		$team -> getPlayer2() -> loadName();
@@ -373,7 +374,10 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 				'#prefix' => '<tr><td>',
 				'#suffix' => '</td>',
 				'#markup' => $team->getName () . '<br />' . $team -> getPlayer1() -> name . '<br />' . $team -> getPlayer2() -> name
-		);
+		);}catch (Exception $ex)
+		{
+			
+		}
 		
 		$form ['team' . $team->id . '_wishleague'] = array (
 				'#prefix' => '<td>',
