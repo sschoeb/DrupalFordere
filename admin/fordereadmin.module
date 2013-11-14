@@ -154,7 +154,11 @@ function fordereadmin_internal_matchcreate($form, $form_state, $championschipId)
 	);
 	
 	$out ['bracket'] = array (
-			'#type' => 'textfield',
+			'#type' => 'select',
+			'#options' => array (
+					0 => "Winner-Bracket",
+					1 => "Loser-Bracket" 
+			),
 			'#title' => t ( 'Bracket' ) 
 	);
 	
