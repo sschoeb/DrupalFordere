@@ -85,6 +85,7 @@ function fordereadmin_menu() {
 					'page callback' => 'drupal_get_form',
 					'page arguments' => array (
 							'fordereadmin_internal_adminchampteams',
+							3 
 					),
 					'access arguments' => array (
 							'fordere admin' 
@@ -353,15 +354,14 @@ function fordereadmin_internal_adminchamp($champId) {
 	);
 }
 
-function fordereadmin_internal_adminchampteams($form, &$form_submit) {
-	
-	
-	$champ = Championschip::CreateChampionschip ( 7 );
+function fordereadmin_internal_adminchampteams($form, $form_submit, $champid) {
+	$champ = Championschip::CreateChampionschip ( $champid );
 	$form = array ();
 	
 	$form ['tablestart'] = array (
-			'#markup' => '<table><tr><th>Name</th><th>Wunschliga</th><th>Eintragen</th></tr>' 
+			'#markup' => '<table><tr><th>Name</th><th>Wunschliga</th><th>Change</th><th>Liga</th></tr>' 
 	);
+	
 	$teams = $champ->getRegisteredTeams ();
 	foreach ( $teams as $team ) {
 		
@@ -370,9 +370,8 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 		$form ['team' . $team->id] = array (
 				'#prefix' => '<tr><td>',
 				'#suffix' => '</td>',
-				'#markup' => $team->getName () . '<br />' . $team -> getPlayer1() -> name . '<br />' . $team -> getPlayer2() -> name
+				'#markup' => $team->getName () . '(' . $team->id . ' )<br />' . $team->getPlayer1 ()->name . '<br />' . $team->getPlayer2 ()->name 
 		);
-		
 		
 		$form ['team' . $team->id . '_wishleague'] = array (
 				'#prefix' => '<td>',
@@ -380,18 +379,22 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 				'#markup' => $team->wishleague 
 		);
 		
-		if ($team->getLeagueApproved () > 0) {
-			$form ['team' . $team->id . '_commit'] = array (
-					'#markup' => '<td>' . $team->getLeagueApprovedName () . '</td></tr>' 
-			);
-		} else {
-			$form ['team' . $team->id . '_commit'] = array (
-					'#prefix' => '<td>',
-					'#suffix' => '</td></tr>',
-					'#type' => 'submit',
-					'#value' => t ( 'Eintragen' ) 
-			);
-		}
+		$tapp = $team->getLeagueApproved ();
+		$c ++;
+		$form ['team' . $team->id . '_change'] = array (
+				'#prefix' => '<td>',
+				'#suffix' => '</td>',
+				'#type' => 'checkbox',
+				'#default_value' => ! ($tapp > 0) 
+		);
+		
+		$form ['team' . $team->id . '_option'] = array (
+				'#prefix' => '<td>',
+				'#suffix' => '</td></tr>',
+				'#type' => 'select',
+				'#default_value' => $team->getLeagueApproved (),
+				'#options' => $champ->getLeagues () 
+		);
 	}
 	
 	$form ['tableend'] = array (
@@ -400,15 +403,26 @@ function fordereadmin_internal_adminchampteams($form, &$form_submit) {
 	
 	$form ['submit'] = array (
 			'#type' => 'submit',
-			'#value' => t ( 'Eintragen' )
+			'#value' => t ( 'Eintragen' ) 
+	);
+	
+	$form ['champid'] = array (
+			'#type' => 'hidden',
+			'#value' => $champid 
 	);
 	
 	return $form;
 }
 
 function fordereadmin_internal_adminchampteams_submit($form, &$form_state) {
-	echo "<pre>";
-	var_dump ( $form_state );
+	$champ = Championschip::CreateChampionschip ( $form_state ['values'] ['champid'] );
+	
+	$teams = $champ->getRegisteredTeams ();
+	foreach ( $teams as $team ) {
+		if ($form_state ['values'] ['team' . $team->id . '_change'] == "1") {
+			$champ->setLeague ( $team->id, $form_state ['values'] ['team' . $team->id . '_option'] );
+		}
+	}
 }
 
 function fordereadmin_internal_adminseason_newchamp($seasonId) {
