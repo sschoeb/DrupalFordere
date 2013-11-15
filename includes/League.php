@@ -545,7 +545,7 @@ class League extends Championschip {
 		$i = 1;
 		foreach ( $teams as $team ) {
 			
-			$team -> loadAdditionalFields();
+			$team->loadAdditionalFields ();
 			
 			$formout ['items'] [$team->id] ['nr'] = array (
 					'#markup' => $i 
@@ -559,7 +559,7 @@ class League extends Championschip {
 			$formout ['items'] [$team->id] ['player2'] = array (
 					'#markup' => $team->getPlayer2 ()->name . "(" . $team->getPlayer2 ()->drupalUserId . ")<br />" . $team->getPlayer2 ()->getContactEmail () . '<br />' . $team->getPlayer2 ()->getPhone () 
 			);
-
+			
 			$formout ['items'] [$team->id] ['wishleague'] = array (
 					'#markup' => $team->wishleague 
 			);
@@ -792,7 +792,8 @@ class League extends Championschip {
 						'#options' => array (
 								$homename . ' > 4:0 < ' . $guestname,
 								$homename . ' > 3:1 < ' . $guestname,
-								$homename . ' > 2:2 < ' . $guestname,
+								$homename . ' > 3:2 < ' . $guestname,
+								$homename . ' > 2:3 < ' . $guestname,
 								$homename . ' > 1:3 < ' . $guestname,
 								$homename . ' > 0:4 < ' . $guestname 
 						),
@@ -833,14 +834,18 @@ class League extends Championschip {
 				$pointsTeamGuest = 1;
 				break;
 			case 2 :
-				$pointsTeamHome = 2;
+				$pointsTeamHome = 3;
 				$pointsTeamGuest = 2;
 				break;
 			case 3 :
-				$pointsTeamHome = 1;
+				$pointsTeamHome = 2;
 				$pointsTeamGuest = 3;
 				break;
 			case 4 :
+				$pointsTeamHome = 1;
+				$pointsTeamGuest = 3;
+				break;
+			case 5 :
 				$pointsTeamHome = 0;
 				$pointsTeamGuest = 4;
 				break;
