@@ -433,7 +433,8 @@ class League extends Championschip {
 			$op = $this->getTeamWithMinHomeGameCount ( $teams, $teamId );
 			$id = array_search ( $op, $teams );
 			unset ( $teams [$id] );
-			GameFactory::createGame ( $teamId, $op->id, $this->id, "Title" );
+			$title = $team->getName () . ' vs. ' . $op->getName ();
+			GameFactory::createGame ( $teamId, $op->id, $this->id, null, $title );
 		}
 		
 		for($i = $half; $i < $count; $i ++) {
@@ -441,7 +442,8 @@ class League extends Championschip {
 			$op = $this->getTeamWithMinGuestGameCount ( $teams, $teamId );
 			$id = array_search ( $op, $teams );
 			unset ( $teams [$id] );
-			GameFactory::createGame ( $op->id, $teamId, $this->id, "Title" );
+			$title = $op->getName () . ' vs. ' . $team->getName ();
+			GameFactory::createGame ( $op->id, $teamId, $this->id, null, $title );
 		}
 	}
 
